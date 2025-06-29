@@ -448,6 +448,48 @@
                 font-size: 28px;
             }
         }
+
+        /* 透明圆形立即咨询按钮样式 */
+        .fixed-cta {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+        }
+
+        .circle-cta-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(231, 76, 60, 0.7); /* 半透明背景色 */
+            color: white;
+            border-radius: 50%; /* 圆形样式 */
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .circle-cta-btn:hover {
+            background-color: rgba(231, 76, 60, 1); /* 鼠标悬停时变为不透明 */
+            transform: scale(1.1); /* 鼠标悬停时放大 */
+            cursor: pointer;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .fixed-cta {
+                right: 15px;
+            }
+
+            .circle-cta-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -458,7 +500,7 @@
             <li><a href="#home">首页</a></li>
             <li><a href="#products">产品展示</a></li>
             <li><a href="#advantages">优势</a></li>
-                        <li><a href="#contact">联系我们</a></li>
+            <li><a href="#contact">联系我们</a></li>
         </ul>
     </header>
 
@@ -467,8 +509,7 @@
         <div class="hero-content">
             <h1>专业管材销售解决方案提供商</h1>
             <p>为您提供建筑给排水、市政工程、工业输送等全系列管材产品，助力您的工程项目顺利推进</p>
-            <a href="#contact" class="cta-btn">立即咨询</a>
-        </div>
+                    </div>
     </section>
 
     <!-- 简短介绍区 -->
@@ -483,6 +524,8 @@
             <p>精选优质管材产品，满足多样化工程需求</p>
         </div>
         <div class="product-grid">
+            <!-- 产品项目 -->
+
             <div class="product-item">
                 <div class="product-img">
                     <!-- 这里替换为管材产品图片 -->
@@ -534,7 +577,7 @@
             <div class="product-item">
                 <div class="product-img">
                     <!-- 这里替换为管材产品图片 -->
-                    <img src="https://img.alicdn.com/bao/uploaded/i2/4133990299/O1CN01nQW8IR1E4zUYFqnqJ_!!4611686018427383707-0-item_pic.jpg_180x180.jpg" alt="热镀锌钢管">
+                    <img src="https://img.alicdn.com/imgextra/i4/2208135286086/O1CN01hQ5lMt1upR4ZzHxtK_!!2208135286086.jpg" alt="热镀锌钢管">
                 </div>
                 <div class="product-info">
                     <h3>热镀锌钢管</h3>
@@ -609,7 +652,8 @@
         </div>
 
         <div class="advantage-grid">
-            <div class="advantage-item">
+            <!-- 优势项目 -->
+ <div class="advantage-item">
                 <div class="advantage-icon">🔍</div>
                 <h3>优质产品甄选</h3>
                 <p>我们与众多优质管材生产商建立了长期合作关系，经过严格筛选与评估，确保所销售的管材产品均符合国家标准与行业规范，性能卓越，质量可靠，为您的工程项目提供坚实保障。无论是建筑给排水、市政工程还是工业输送项目，我们都能提供适配的产品方案。</p>
@@ -634,8 +678,6 @@
             </div>
         </div>
     </section>
-
-    
 
     <!-- 联系我们板块 -->
     <section class="contact" id="contact">
@@ -675,6 +717,11 @@
     <footer>
         <p>© [2025] [德阳市鑫泰和建材有限公司]. All Rights Reserved.</p>
     </footer>
+
+    <!-- 透明圆形立即咨询按钮 -->
+    <div class="fixed-cta">
+        <a href="#contact" class="circle-cta-btn">咨询</a>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
