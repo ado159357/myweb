@@ -1,0 +1,711 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - [德阳市鑫泰和建材有限公司]</title>
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 页头样式 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #3498db;
+        }
+
+        /* 英雄区样式 */
+        .hero {
+            height: 100vh;
+            background-image: url('images/bj.jpg'); /* 这里替换为管材相关背景图链接 */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 背景图遮罩，让文字更清晰 */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .cta-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* 简短介绍区样式 */
+        .intro {
+            padding: 80px 5%;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .intro p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        /* 产品展示板块样式 */
+        .products {
+            padding: 80px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .product-category-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .product-category-nav li {
+            margin: 0 15px 10px;
+        }
+
+        .product-category-nav a {
+            padding: 8px 20px;
+            border-radius: 30px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            transition: all 0.3s;
+        }
+
+        .product-category-nav a.active, .product-category-nav a:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            height: 200px;
+            background-color: #f5f5f5; /* 示例占位背景色，实际替换成图片 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .product-info p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .more-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .more-btn:hover {
+            background-color: #1a252f;
+        }
+
+        /* 产品优势板块样式 */
+        .advantages {
+            padding: 80px 5%;
+            background-color: #f9f9f9;
+        }
+
+        .advantage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .advantage-item {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .advantage-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .advantage-icon {
+            font-size: 48px;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+
+        .advantage-item h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .advantage-item p {
+            color: #7f8c8d;
+            font-size: 15px;
+        }
+
+        /* 案例展示板块样式 */
+        .cases {
+            padding: 80px 5%;
+        }
+
+        .case-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .case-filter li {
+            margin: 0 15px 10px;
+        }
+
+        .case-filter a {
+            padding: 8px 20px;
+            border-radius: 30px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            transition: all 0.3s;
+        }
+
+        .case-filter a.active, .case-filter a:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .case-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-img {
+            height: 220px;
+            background-color: #f5f5f5; /* 示例占位背景色 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .case-img img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .case-info {
+            padding: 20px;
+        }
+
+        .case-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .case-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 联系我们板块样式 */
+        .contact {
+            padding: 80px 5%;
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+
+        .contact-info h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .contact-detail {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-detail i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #3498db;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #1a252f;
+            color: white;
+            text-align: center;
+            padding: 20px 5%;
+            font-size: 14px;
+        }
+
+        /* 响应式调整样式 */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 5%;
+                flex-direction: column;
+            }
+
+            .nav-menu {
+                margin-top: 15px;
+            }
+
+            .nav-menu li {
+                margin: 0 10px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页头 -->
+    <header>
+        <div class="logo">[德阳市鑫泰和建材有限公司]</div>
+        <ul class="nav-menu">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#products">产品展示</a></li>
+            <li><a href="#advantages">优势</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+        </ul>
+    </header>
+
+    <!-- 英雄区 -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>专业管材销售解决方案提供商</h1>
+            <p>为您提供建筑给排水、市政工程、工业输送等全系列管材产品，助力您的工程项目顺利推进</p>
+            <a href="#contact" class="cta-btn">立即咨询</a>
+        </div>
+    </section>
+
+    <!-- 简短介绍区 -->
+    <section class="intro">
+        <p>[德阳市鑫泰和建材有限公司] 成立于 [2000年]，是一家专注于各类管材产品销售的专业供应商。我们与众多优质管材生产商建立了长期稳定的合作关系，致力于为客户提供高品质、全系列的管材产品，涵盖建筑给排水、市政工程、工业输送等多个领域。凭借专业的销售团队、完善的物流配送体系和优质的客户服务，我们赢得了广大客户的信赖与支持。</p>
+    </section>
+
+    <!-- 产品展示板块 -->
+    <section class="products" id="products">
+        <div class="section-title">
+            <h2>产品展示</h2>
+            <p>精选优质管材产品，满足多样化工程需求</p>
+        </div>
+        <div class="product-grid">
+            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="https://omo-oss-image.thefastimg.com/portal-saas/pg2024030608295509076/cms/image/dd89c1fc-d457-4557-b348-a61d96172e04.png" alt="钢塑复合管">
+                </div>
+                <div class="product-info">
+                    <h3>钢塑复合管</h3>
+                    <p>涂塑复合钢管、衬塑复合钢管、建筑排水钢塑复合短螺距内螺旋管材。</p>
+                    
+                </div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="https://omo-oss-image.thefastimg.com/portal-saas/pg2024030608295509076/cms/image/7b4c3f37-62a6-473c-a41a-61773e712e06.png" alt="管路连接件">
+                </div>
+                <div class="product-info">
+                    <h3>管路连接件</h3>
+                    <p>可锻铸铁管路连接件(镀锌/衬塑/涂塑)、沟槽式管路连接件(涂塑/衬塑/镀锌)、碳钢管路连接件。</p>
+                    
+                </div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="https://omo-oss-image.thefastimg.com/portal-saas/pg2024030608295509076/cms/image/7c042b4f-f373-4205-bab8-4d2cec3a38ff.png" alt="直缝高频焊接圆管(含热浸镀锌)">
+                </div>
+                <div class="product-info">
+                    <h3>直缝高频焊接圆管(含热浸镀锌)</h3>
+                    <p>热浸镀锌圆管、直缝高频焊接圆管。</p>
+  
+                    
+                </div>
+            </div>
+
+            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="https://omo-oss-image.thefastimg.com/portal-saas/pg2024030608295509076/cms/image/047e225a-291e-4a79-83eb-a69eaad70bbc.png" alt="不锈钢管及管件">
+                </div>
+                <div class="product-info">
+                    <h3>不锈钢管及管件</h3>
+                    <p>薄壁不锈钢管及管件、工业不锈钢管、不锈钢换热器专用管。</p>
+                   
+                </div>
+            </div>
+            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="images/05.jpg" alt="热镀锌钢管">
+                </div>
+                <div class="product-info">
+                    <h3>热镀锌钢管</h3>
+                    <p>热镀锌管是为提高钢管的耐腐蚀性能，对一般钢管进行镀锌。</p>
+  
+                    
+                </div>
+            </div>            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="images/06.jpg" alt="衬塑钢管">
+                </div>
+                <div class="product-info">
+                    <h3>衬塑钢管</h3>
+                    <p>衬塑钢管，是以镀锌钢管为基管，内壁去除焊筋后，衬入与镀锌管内等径的食品级聚乙烯（PE）管材，聚乙烯衬层厚度要求符合HG/T 20538-2016标准，最后加压加热一定时间后成型，是传统镀锌管的升级型产品。</p>
+  
+                    
+                </div>
+            </div>            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="images/07.jpg" alt="涂塑钢管">
+                </div>
+                <div class="product-info">
+                    <h3>涂塑钢管</h3>
+                    <p>涂塑钢管，又名涂塑管、涂覆钢管、钢塑复合管、涂塑复合钢管，是以钢管为基体，通过喷、滚、浸、吸工艺在钢管（底管）内表面熔接一层塑料防腐层或在内外表面熔接塑料防腐层的钢塑复合钢管。涂塑钢管具有优良的耐腐蚀性和比较小的摩擦阻力。环氧树脂涂塑钢管适用于给排水、海水、温水、油、气体等介质的输送，聚氯乙烯涂塑钢管适用于排水、海水、油、气体等介质的输送。</p>
+  
+                    
+                </div>
+            </div>            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="images/08.jpg" alt="不锈钢管">
+                </div>
+                <div class="product-info">
+                    <h3>不锈钢管</h3>
+                    <p>304不锈钢是不锈钢中常见的一种材质，密度为7.93 g/cm³；业内也叫作18/8不锈钢，意思为含有18％以上的铬和8％以上的镍；耐高温800℃，具有加工性能好，韧性高的特点，广泛应用于工业和家具装饰行业和食品医疗行业。</p>
+  
+                    
+                </div>
+            </div>            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="images/09.jpg" alt="HDPE实壁管">
+                </div>
+                <div class="product-info">
+                    <h3>HDPE实壁管</h3>
+                    <p>适用于工作温度不超过40℃的城镇给水、排水、再生水和燃气用。</p>
+  
+                    
+                </div>
+            </div>            <div class="product-item">
+                <div class="product-img">
+                    <!-- 这里替换为管材产品图片 -->
+                    <img src="images/10.jpg" alt="PE双壁波纹管">
+                </div>
+                <div class="product-info">
+                    <h3>PE双壁波纹管</h3>
+                    <p>双壁波纹管采用优质材料生产，是一种新型环保塑料管材，具有重量轻、环刚度高，施工方便，其综合造价低于铸铁管和混凝土管道等特点。</p>
+  
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品优势板块 -->
+    <section class="advantages" id="advantages">
+        <div class="section-title">
+            <h2>销售优势</h2>
+            <p>专业销售服务，为您提供全方位支持</p>
+        </div>
+
+        <div class="advantage-grid">
+            <div class="advantage-item">
+                <div class="advantage-icon">🔍</div>
+                <h3>优质产品甄选</h3>
+                <p>我们与众多优质管材生产商建立了长期合作关系，经过严格筛选与评估，确保所销售的管材产品均符合国家标准与行业规范，性能卓越，质量可靠，为您的工程项目提供坚实保障。无论是建筑给排水、市政工程还是工业输送项目，我们都能提供适配的产品方案。</p>
+            </div>
+
+            <div class="advantage-item">
+                <div class="advantage-icon">🚚</div>
+                <h3>高效物流配送</h3>
+                <p>完善的物流配送体系，与多家知名物流公司达成合作，能够根据客户项目地点与需求，制定最优的物流方案，确保管材产品按时、准确送达项目现场。我们注重运输过程中的产品保护，减少运输损耗，保障产品完好交付。</p>
+            </div>
+
+            <div class="advantage-item">
+                <div class="advantage-icon">👥</div>
+                <h3>专业销售团队</h3>
+                <p>拥有一支经验丰富、专业素养高的销售团队，团队成员熟悉各类管材产品的性能特点、应用领域及安装规范，能够为客户提供专业的售前咨询、方案设计、产品选型等一站式服务。我们致力于了解客户项目需求，提供个性化的产品解决方案，助力客户工程项目顺利实施。</p>
+            </div>
+
+            <div class="advantage-item">
+                <div class="advantage-icon">📞</div>
+                <h3>优质客户服务</h3>
+                <p>我们重视每一位客户，提供全方位的售中、售后服务。客户在购买过程中遇到的任何疑问，我们都会及时响应并给予专业解答。产品安装过程中，我们可提供技术指导支持。若产品在使用过程中出现质量问题，我们将严格按照产品质保规定，为客户提供退换货、维修等服务，让您无后顾之忧。</p>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- 联系我们板块 -->
+    <section class="contact" id="contact">
+        <div class="section-title">
+            <h2 style="color: white;">联系我们</h2>
+            <p style="color: white;">期待与您携手合作，共创美好未来</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>公司信息</h3>
+                <div class="contact-detail">
+                    <i>🏢</i>
+                    <div>公司名称：[德阳市鑫泰和建材有限公司]</div>
+                </div>
+                <div class="contact-detail">
+                    <i>📍</i>
+                    <div>公司地址：[详细地址]</div>
+                </div>
+                <div class="contact-detail">
+                    <i>📞</i>
+                    <div>联系电话：[徐经理 13890203143]</div>
+                </div>
+                <div class="contact-detail">
+                    <i>📠</i>
+                    <div>传真：[传真号码]</div>
+                </div>
+                <div class="contact-detail">
+                    <i>✉️</i>
+                    <div>电子邮箱：[邮箱地址]</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© [2025] [德阳市鑫泰和建材有限公司]. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 平滑滚动到锚点
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 导航栏滚动效果
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                } else {
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
