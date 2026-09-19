@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 关键：确保在手机上以正确的宽度和缩放比例显示 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>main.c - Visual Studio Code</title>
     <style>
@@ -25,6 +24,12 @@
             
             --border-color: #3e3e42;
             --hover-bg: #2a2d2e;
+            
+            --course-bg-blue: rgba(86, 156, 214, 0.15);
+            --course-bg-yellow: rgba(220, 220, 170, 0.15);
+            --course-bg-orange: rgba(206, 145, 120, 0.15);
+            --course-bg-green: rgba(106, 153, 85, 0.15);
+            --course-bg-purple: rgba(197, 134, 192, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,7 +49,7 @@
 
         .vscode-window {
             width: 100%;
-            max-width: 1150px;
+            max-width: 1200px; /* 稍微放宽以容纳固定宽度的表格 */
             background-color: var(--vscode-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -84,7 +89,7 @@
             min-height: 550px;
         }
 
-        /* --- 左侧活动栏 (手机端隐藏) --- */
+        /* --- 左侧活动栏 --- */
         .activity-bar {
             width: 50px;
             background-color: #333333;
@@ -112,7 +117,7 @@
             flex-direction: column;
             gap: 15px;
             background-color: var(--vscode-bg);
-            min-width: 0; /* 防止内容溢出 */
+            min-width: 0;
         }
 
         /* --- 搜索框 --- */
@@ -176,51 +181,69 @@
         
         .highlight-date { color: var(--syntax-type); }
 
-        /* --- 课表区域 (重点：横向滚动) --- */
+        /* =========================================================
+           课表美化核心区域
+           ========================================================= */
         .timetable-container { 
             overflow-x: auto; 
             margin-top: 5px;
-            /* 增加滚动条的视觉提示 */
-            padding-bottom: 5px;
+            padding-bottom: 10px;
         }
         
-        /* 手机端滚动条美化 */
-        .timetable-container::-webkit-scrollbar {
-            height: 6px;
-        }
-        .timetable-container::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 3px;
-        }
+        .timetable-container::-webkit-scrollbar { height: 8px; }
+        .timetable-container::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        .timetable-container::-webkit-scrollbar-track { background: #1e1e1e; }
 
         .timetable {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             font-size: 13.5px;
-            min-width: 750px; /* 保证表格不会压缩得太小 */
+            /* 固定表格的最小宽度，让每列有固定空间 */
+            min-width: 900px; 
             border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
         }
 
         .timetable th, .timetable td {
-            border: 1px solid var(--border-color);
-            padding: 6px;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px;
             text-align: center;
             vertical-align: middle;
+            /* 固定列宽 */
+            width: 110px;
+        }
+        
+        /* 第一列（时间列）宽度稍大 */
+        .timetable .time-col {
+            width: 90px;
+            background-color: #1a1a1a;
+            color: var(--text-muted);
+            font-size: 12px;
+            border-right: 2px solid var(--border-color);
         }
 
+        /* 去掉最后一列的右边框和最后一行的下边框 */
+        .timetable th:last-child, .timetable td:last-child { border-right: none; }
+        .timetable tbody tr:last-child td { border-bottom: none; }
+
+        /* 表头美化 */
         .timetable th {
-            background-color: #1a1a1a;
+            background-color: #252526;
             color: var(--syntax-type);
             font-weight: normal;
-            padding: 8px 6px;
+            padding: 10px 6px;
             font-size: 14px;
+            border-bottom: 2px solid var(--border-color);
         }
         
         .date-span {
             font-size: 11px;
             color: var(--text-muted);
             display: block;
-            margin-top: 3px;
+            margin-top: 4px;
         }
 
         .today-highlight {
@@ -228,36 +251,41 @@
             font-weight: bold;
         }
 
-        .timetable .time-col {
-            width: 80px;
-            background-color: #1a1a1a;
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
+        /* 课程卡片美化 */
         .course-card {
-            border-radius: 3px;
-            padding: 5px 8px;
+            border-radius: 4px;
+            padding: 6px 8px;
             text-align: left;
             line-height: 1.4;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: default;
+            border: 1px solid transparent;
         }
         
-        .course-name { font-weight: bold; margin-bottom: 3px; font-size: 13px; }
+        .course-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .course-name { font-weight: bold; margin-bottom: 4px; font-size: 13px; }
         .course-info { font-size: 11.5px; color: var(--text-muted); }
 
         /* C 语言主题色分类 */
-        .c-blue { border-left: 3px solid var(--syntax-function); }
+        .c-blue { background-color: var(--course-bg-blue); border-left: 3px solid var(--syntax-function); }
         .c-blue .course-name { color: var(--syntax-function); }
-        .c-purple { border-left: 3px solid var(--syntax-keyword); }
+        .c-purple { background-color: var(--course-bg-purple); border-left: 3px solid var(--syntax-keyword); }
         .c-purple .course-name { color: var(--syntax-keyword); }
-        .c-green { border-left: 3px solid var(--syntax-comment); }
+        .c-green { background-color: var(--course-bg-green); border-left: 3px solid var(--syntax-comment); }
         .c-green .course-name { color: var(--syntax-comment); }
-        .c-orange { border-left: 3px solid var(--syntax-string); }
+        .c-orange { background-color: var(--course-bg-orange); border-left: 3px solid var(--syntax-string); }
         .c-orange .course-name { color: var(--syntax-string); }
-        .c-yellow { border-left: 3px solid var(--syntax-macro); }
+        .c-yellow { background-color: var(--course-bg-yellow); border-left: 3px solid var(--syntax-macro); }
         .c-yellow .course-name { color: var(--syntax-macro); }
 
-        /* --- 底部状态栏 --- */
+        /* =========================================================
+           底部状态栏
+           ========================================================= */
         .status-bar {
             background-color: var(--vscode-statusbar); 
             color: white; 
@@ -271,84 +299,37 @@
         .status-icon { font-size: 13px; }
 
         /* =========================================================
-           媒体查询：专门针对手机屏幕的适配调整 (屏幕宽度小于 768px)
+           媒体查询：手机端适配
            ========================================================= */
         @media screen and (max-width: 768px) {
-            body {
-                padding: 5px; /* 手机端减少外围留白 */
-                font-size: 14px; /* 稍微缩小字体适应小屏 */
-            }
-            
-            .vscode-window {
-                border-radius: 0; /* 手机端取消圆角，全屏显示更自然 */
-                border: none;
-            }
-
-            /* 隐藏左侧活动栏，给主体内容留出空间 */
-            .activity-bar {
-                display: none;
-            }
-
-            .editor-area {
-                padding: 12px 10px; /* 缩小内边距 */
-                gap: 10px;
-            }
-
-            /* 搜索框调整 */
-            .search-line {
-                padding: 8px 10px;
-                gap: 6px;
-            }
+            body { padding: 5px; font-size: 14px; }
+            .vscode-window { border-radius: 0; border: none; }
+            .activity-bar { display: none; }
+            .editor-area { padding: 12px 10px; gap: 10px; }
+            .search-line { padding: 8px 10px; gap: 6px; }
             .prompt-symbol { font-size: 13px; }
             .search-line input { font-size: 14px; }
-
-            /* 链接列表：变成单列布局，保证每个链接都好点 */
-            .link-list { 
-                grid-template-columns: 1fr; /* 强制一列 */
-                gap: 4px;
-            }
+            .link-list { grid-template-columns: 1fr; gap: 4px; }
+            .code-line { padding: 8px 10px; font-size: 14px; }
+            .line-number { width: 22px; margin-right: 10px; font-size: 12px; }
             
-            .code-line {
-                padding: 8px 10px; /* 增加点击区域高度 */
-                font-size: 14px;
-            }
-            
-            .line-number {
-                width: 22px;
-                margin-right: 10px;
-                font-size: 12px;
-            }
-
-            /* 课表区域调整 */
-            .timetable {
-                font-size: 12px;
-                min-width: 650px; /* 稍微缩小一点，减少滑动的距离 */
-            }
-            .timetable th { font-size: 12px; padding: 6px 4px; }
-            .timetable td { padding: 4px; }
-            
+            .timetable { font-size: 12px; min-width: 750px; }
+            .timetable th { font-size: 12px; padding: 8px 4px; }
+            .timetable td { padding: 6px; }
             .course-name { font-size: 11.5px; }
             .course-info { font-size: 10.5px; }
+            .timetable .time-col { width: 75px; font-size: 11px; }
+            .course-card { padding: 4px 6px; }
             
-            .timetable .time-col { width: 65px; font-size: 11px; }
-
-            /* 状态栏调整 */
-            .status-bar {
-                font-size: 10px;
-                padding: 4px 10px;
-            }
-            /* 手机端状态栏隐藏部分信息，避免拥挤 */
+            .status-bar { font-size: 10px; padding: 4px 10px; }
             .status-right span:nth-child(2),
-            .status-right span:nth-child(3) {
-                display: none; /* 隐藏 "Spaces: 4" 和 "UTF-8" */
-            }
+            .status-right span:nth-child(3) { display: none; }
         }
     </style>
 </head>
 <body>
 
     <div class="vscode-window">
-        <!-- 顶部标签栏 -->
         <div class="vscode-tabs">
             <div class="tab">
                 <span class="icon-c">C</span>
@@ -356,10 +337,7 @@
             </div>
         </div>
 
-        <!-- 主体区域 -->
         <div class="vscode-main">
-            
-            <!-- 左侧活动栏 (手机端自动隐藏) -->
             <div class="activity-bar">
                 <div class="activity-icon active">📄</div>
                 <div class="activity-icon">🔍</div>
@@ -368,10 +346,8 @@
                 <div class="activity-icon">🧩</div>
             </div>
 
-            <!-- 编辑器内容区 -->
             <div class="editor-area">
                 
-                <!-- 搜索框 -->
                 <div class="search-line">
                     <span class="prompt-symbol">scanf("%s", buffer);</span>
                     <form action="https://cn.bing.com/search" method="GET" target="_blank" style="flex-grow:1; display:flex; margin-left: 5px;">
@@ -379,106 +355,99 @@
                     </form>
                 </div>
 
-                <!-- 网址列表 -->
                 <div class="link-list">
-                    
                     <a href="https://github.com" target="_blank" class="code-line">
                         <span class="line-number">1</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;github.com&gt;</span>
                         <span class="syntax-comment">&nbsp;// 代码托管</span>
                     </a>
-                    
                     <a href="https://www.bilibili.com" target="_blank" class="code-line">
                         <span class="line-number">2</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;bilibili.com&gt;</span>
                         <span class="syntax-comment">&nbsp;// 学习/摸鱼</span>
                     </a>
-                    
                     <a href="https://chat.openai.com" target="_blank" class="code-line">
                         <span class="line-number">3</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;chatgpt.com&gt;</span>
                         <span class="syntax-comment">&nbsp;// AI 辅助</span>
                     </a>
-                    
                     <a href="#" target="_blank" class="code-line">
                         <span class="line-number">4</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;教务系统&gt;</span>
                         <span class="syntax-comment">&nbsp;// 查成绩</span>
                     </a>
-                    
                     <a href="https://www.zhihu.com" target="_blank" class="code-line">
                         <span class="line-number">5</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;zhihu.com&gt;</span>
                         <span class="syntax-comment">&nbsp;// 摸鱼</span>
                     </a>
-                    
                 </div>
 
-                <!-- 课表头部注释 -->
                 <div class="divider">
                     <span>/* ===== struct CourseTable ===== */</span>
                     <span id="date-range-display" class="highlight-date">计算中...</span>
                 </div>
 
-                <!-- 课表区域 (手机端可横向滑动) -->
+                <!-- 课表区域 -->
                 <div class="timetable-container">
                     <table class="timetable">
                         <thead>
                             <tr>
                                 <th class="time-col">time_t</th>
-                                <th>周一 <span id="date-1" class="date-span">--/--</span></th>
-                                <th>周二 <span id="date-2" class="date-span">--/--</span></th>
-                                <th>周三 <span id="date-3" class="date-span">--/--</span></th>
-                                <th>周四 <span id="date-4" class="date-span">--/--</span></th>
-                                <th>周五 <span id="date-5" class="date-span">--/--</span></th>
-                                <th>周六 <span id="date-6" class="date-span">--/--</span></th>
+                                <th id="head-1">--</th>
+                                <th id="head-2">--</th>
+                                <th id="head-3">--</th>
+                                <th id="head-4">--</th>
+                                <th id="head-5">--</th>
+                                <th id="head-6">--</th>
+                                <th id="head-7">--</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- 1-2节 -->
                             <tr>
                                 <td class="time-col">08:10<br>~<br>09:50</td>
-                                <td><div class="course-card c-yellow"><div class="course-name">高等数学AI</div><div class="course-info">10-B208<br>黄厚辉</div></div></td>
-                                <td></td>
-                                <td><div class="course-card c-blue"><div class="course-name">高级语言程序设计I</div><div class="course-info">10-B208<br>王曼韬</div></div></td>
-                                <td></td>
-                                <td><div class="course-card c-purple"><div class="course-name">大学生心理健康与职业发...</div><div class="course-info">10-A404<br>李云...</div></div></td>
-                                <td></td>
+                                <td id="cell-1-1"></td>
+                                <td id="cell-1-2"></td>
+                                <td id="cell-1-3"></td>
+                                <td id="cell-1-4"></td>
+                                <td id="cell-1-5"></td>
+                                <td id="cell-1-6"></td>
+                                <td id="cell-1-7"></td>
                             </tr>
-                            <!-- 3-4节 -->
                             <tr>
                                 <td class="time-col">10:10<br>~<br>11:50</td>
-                                <td><div class="course-card c-blue"><div class="course-name">高级语言程序设计I</div><div class="course-info">10-B401<br>王曼韬</div></div></td>
-                                <td><div class="course-card c-green"><div class="course-name">大学体育I</div><div class="course-info">2校区运动场03<br>张润桃</div></div></td>
-                                <td></td>
-                                <td><div class="course-card c-yellow"><div class="course-name">高等数学AI</div><div class="course-info">10-A302<br>黄厚辉</div></div></td>
-                                <td><div class="course-card c-green"><div class="course-name">大学英语AI</div><div class="course-info">10-A304<br>翟永丽</div></div></td>
-                                <td></td>
+                                <td id="cell-2-1"></td>
+                                <td id="cell-2-2"></td>
+                                <td id="cell-2-3"></td>
+                                <td id="cell-2-4"></td>
+                                <td id="cell-2-5"></td>
+                                <td id="cell-2-6"></td>
+                                <td id="cell-2-7"></td>
                             </tr>
-                            <!-- 5-6节 -->
                             <tr>
                                 <td class="time-col">14:20<br>~<br>16:00</td>
-                                <td><div class="course-card c-orange"><div class="course-name">物联网工程导论</div><div class="course-info">1-508<br>蒲海波</div></div></td>
-                                <td></td>
-                                <td><div class="course-card c-yellow"><div class="course-name">高等数学AI</div><div class="course-info">10-B208<br>黄厚辉</div></div></td>
-                                <td></td>
-                                <td><div class="course-card c-orange"><div class="course-name">思想道德与法治</div><div class="course-info">10-B208<br>唐平</div></div></td>
-                                <td></td>
+                                <td id="cell-3-1"></td>
+                                <td id="cell-3-2"></td>
+                                <td id="cell-3-3"></td>
+                                <td id="cell-3-4"></td>
+                                <td id="cell-3-5"></td>
+                                <td id="cell-3-6"></td>
+                                <td id="cell-3-7"></td>
                             </tr>
-                            <!-- 9-10节 (晚课) -->
                             <tr>
                                 <td class="time-col">19:30<br>~<br>21:10</td>
-                                <td><div class="course-card c-green"><div class="course-name">大学英语AI</div><div class="course-info">10-B404<br>翟永丽</div></div></td>
-                                <td></td>
-                                <td><div class="course-card c-orange"><div class="course-name">思想道德与法治</div><div class="course-info">10-B403<br>唐平</div></div></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td id="cell-4-1"></td>
+                                <td id="cell-4-2"></td>
+                                <td id="cell-4-3"></td>
+                                <td id="cell-4-4"></td>
+                                <td id="cell-4-5"></td>
+                                <td id="cell-4-6"></td>
+                                <td id="cell-4-7"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -491,7 +460,6 @@
             </div>
         </div>
 
-        <!-- 底部状态栏 -->
         <div class="status-bar">
             <div class="status-left">
                 <span class="status-icon">🌿</span>
@@ -508,43 +476,75 @@
         </div>
     </div>
 
-    <!-- ========== 动态日期计算 JavaScript ========== -->
+    <!-- ========== 核心逻辑 ========== -->
     <script>
         const today = new Date();
-        const currentDayOfWeek = today.getDay();
-        
-        const distanceToMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
-        
-        const mondayDate = new Date(today);
-        mondayDate.setDate(today.getDate() - distanceToMonday);
+        const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
-        for (let i = 0; i < 6; i++) {
-            const dateElement = document.getElementById(`date-${i + 1}`);
-            if (dateElement) {
-                const tempDate = new Date(mondayDate);
-                tempDate.setDate(mondayDate.getDate() + i);
-                
-                const month = tempDate.getMonth() + 1;
-                const date = tempDate.getDate();
-                
-                if (tempDate.getFullYear() === today.getFullYear() &&
-                    tempDate.getMonth() === today.getMonth() &&
-                    tempDate.getDate() === today.getDate()) {
-                    dateElement.classList.add('today-highlight');
-                    dateElement.innerText = `${month}/${date} *`;
-                } else {
-                    dateElement.innerText = `${month}/${date}`;
-                }
+        // 【修复】补全了周四的课程
+        const courses = [
+            // 周一 (1)
+            { day: 1, session: 1, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
+            { day: 1, session: 2, name: '高级语言程序设计I', room: '10-B401', teacher: '王曼韬', color: 'c-blue' },
+            { day: 1, session: 3, name: '物联网工程导论', room: '1-508', teacher: '蒲海波', color: 'c-orange' },
+            { day: 1, session: 4, name: '大学英语AI', room: '10-B404', teacher: '翟永丽', color: 'c-green' },
+            
+            // 周二 (2)
+            { day: 2, session: 2, name: '大学体育I', room: '2校区运动场03', teacher: '张润桃', color: 'c-green' },
+            
+            // 周三 (3)
+            { day: 3, session: 1, name: '高级语言程序设计I', room: '10-B208', teacher: '王曼韬', color: 'c-blue' },
+            { day: 3, session: 3, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
+            { day: 3, session: 4, name: '思想道德与法治', room: '10-B403', teacher: '唐平', color: 'c-orange' },
+
+            // 【修复】周四 (4)
+            { day: 4, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
+            { day: 4, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
+
+            // 周五 (5)
+            { day: 5, session: 1, name: '大学生心理健康与职业发...', room: '10-A404', teacher: '李云...', color: 'c-purple' },
+            { day: 5, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
+            { day: 5, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
+            
+            // 周六 (6) - 目前无课
+            // 周日 (7) - 目前无课
+        ];
+
+        for (let i = 0; i < 7; i++) {
+            const currentDate = new Date(today);
+            currentDate.setDate(today.getDate() + i);
+            
+            const month = currentDate.getMonth() + 1;
+            const date = currentDate.getDate();
+            const dayOfWeek = currentDate.getDay();
+            
+            const dayName = dayNames[dayOfWeek];
+
+            const headElement = document.getElementById(`head-${i + 1}`);
+            if (headElement) {
+                let html = `${dayName} <span class="date-span ${i === 0 ? 'today-highlight' : ''}">`;
+                html += i === 0 ? `${month}/${date} (今天)` : `${month}/${date}`;
+                html += `</span>`;
+                headElement.innerHTML = html;
             }
+            
+            let targetDayIndex = dayOfWeek;
+            if (targetDayIndex === 0) targetDayIndex = 7;
+            
+            courses.forEach(course => {
+                if (course.day === targetDayIndex) {
+                    const cell = document.getElementById(`cell-${course.session}-${i + 1}`);
+                    if (cell) {
+                        cell.innerHTML = `
+                            <div class="course-card ${course.color}">
+                                <div class="course-name">${course.name}</div>
+                                <div class="course-info">${course.room}<br>${course.teacher}</div>
+                            </div>
+                        `;
+                    }
+                }
+            });
         }
-
-        const saturdayDate = new Date(mondayDate);
-        saturdayDate.setDate(mondayDate.getDate() + 5);
-        
-        const startStr = `${mondayDate.getMonth() + 1}/${mondayDate.getDate()}`;
-        const endStr = `${saturdayDate.getMonth() + 1}/${saturdayDate.getDate()}`;
-        
-        document.getElementById('date-range-display').innerText = `Date: ${startStr} ~ ${endStr}`;
     </script>
 </body>
 </html>
