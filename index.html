@@ -54,7 +54,8 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            overflow: hidden;
+            /* 关键修复：不能在粘性定位的父级设置 overflow: hidden */
+            overflow: visible; 
             display: flex;
             flex-direction: column;
         }
@@ -66,6 +67,8 @@
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             height: 40px;
+            border-radius: 6px 6px 0 0; /* 补回圆角 */
+            overflow: hidden; /* 自身可以隐藏 */
         }
         
         .tab {
@@ -185,11 +188,10 @@
            课表美化核心区域
            ========================================================= */
         .timetable-container { 
+            /* 关键修复：只有这个滚动容器，才能实现内部的粘性定位 */
             overflow-x: auto; 
             margin-top: 5px;
             padding-bottom: 10px;
-            /* 增加滚动条平滑度 */
-            scroll-behavior: smooth;
         }
         
         .timetable-container::-webkit-scrollbar { height: 8px; }
@@ -198,17 +200,15 @@
 
         .timetable {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            /* 关键修复：绝不能在这设置 overflow: hidden */
+            border-collapse: collapse; 
             font-size: 13.5px;
             min-width: 900px; 
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            overflow: hidden;
         }
 
+        /* 单元格基础样式 */
         .timetable th, .timetable td {
-            border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             padding: 8px;
             text-align: center;
@@ -216,23 +216,28 @@
             width: 110px;
         }
         
-        /* 去掉最后一列的右边框和最后一行的下边框 */
-        .timetable th:last-child, .timetable td:last-child { border-right: none; }
-        .timetable tbody tr:last-child td { border-bottom: none; }
+        /* 用右边框形成网格线，最后一列除外 */
+        .timetable th:not(:last-child), .timetable td:not(:last-child) {
+            border-right: 1px solid var(--border-color);
+        }
 
         /* =========================================================
            核心功能：固定左侧时间列 (Sticky Column)
            ========================================================= */
         .timetable .time-col {
+            /* 关键修复：强化 iOS 兼容性 */
+            position: -webkit-sticky;
             position: sticky;
             left: 0;
-            z-index: 10; /* 确保时间列浮在其他内容之上 */
+            z-index: 10;
             width: 90px;
             background-color: #1a1a1a;
             color: var(--text-muted);
             font-size: 12px;
-            border-right: 2px solid var(--border-color) !important; /* 加粗右边框，形成视觉分割线 */
-            box-shadow: 2px 0 5px rgba(0,0,0,0.3); /* 添加阴影，增强悬浮感 */
+            /* 加粗右边框，形成视觉分割线 */
+            border-right: 2px solid var(--border-color) !important; 
+            /* 添加阴影，增强悬浮感 */
+            box-shadow: 2px 0 5px rgba(0,0,0,0.4); 
         }
 
         /* 表头美化 */
@@ -306,6 +311,7 @@
             display: flex; 
             justify-content: space-between;
             align-items: center;
+            border-radius: 0 0 6px 6px; /* 补回圆角 */
         }
         .status-left, .status-right { display: flex; gap: 15px; align-items: center;}
         .status-icon { font-size: 13px; }
@@ -316,6 +322,8 @@
         @media screen and (max-width: 768px) {
             body { padding: 5px; font-size: 14px; }
             .vscode-window { border-radius: 0; border: none; }
+            .vscode-tabs { border-radius: 0; }
+            .status-bar { border-radius: 0; }
             .activity-bar { display: none; }
             .editor-area { padding: 12px 10px; gap: 10px; }
             .search-line { padding: 8px 10px; gap: 6px; }
@@ -493,7 +501,7 @@
         const today = new Date();
         const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
-        // 课程数据库 (按周几和节次定义)
+        // 【修复】补全了周四的课程
         const courses = [
             // 周一 (1)
             { day: 1, session: 1, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
@@ -506,7 +514,7 @@
             { day: 3, session: 1, name: '高级语言程序设计I', room: '10-B208', teacher: '王曼韬', color: 'c-blue' },
             { day: 3, session: 3, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
             { day: 3, session: 4, name: '思想道德与法治', room: '10-B403', teacher: '唐平', color: 'c-orange' },
-            // 周四 (4)
+            // 周四 (4) 【修复】
             { day: 4, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
             { day: 4, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
             // 周五 (5)
