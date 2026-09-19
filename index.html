@@ -49,7 +49,7 @@
 
         .vscode-window {
             width: 100%;
-            max-width: 1200px; /* 稍微放宽以容纳固定宽度的表格 */
+            max-width: 1200px;
             background-color: var(--vscode-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -188,6 +188,8 @@
             overflow-x: auto; 
             margin-top: 5px;
             padding-bottom: 10px;
+            /* 增加滚动条平滑度 */
+            scroll-behavior: smooth;
         }
         
         .timetable-container::-webkit-scrollbar { height: 8px; }
@@ -199,7 +201,6 @@
             border-collapse: separate;
             border-spacing: 0;
             font-size: 13.5px;
-            /* 固定表格的最小宽度，让每列有固定空间 */
             min-width: 900px; 
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -212,22 +213,27 @@
             padding: 8px;
             text-align: center;
             vertical-align: middle;
-            /* 固定列宽 */
             width: 110px;
         }
         
-        /* 第一列（时间列）宽度稍大 */
+        /* 去掉最后一列的右边框和最后一行的下边框 */
+        .timetable th:last-child, .timetable td:last-child { border-right: none; }
+        .timetable tbody tr:last-child td { border-bottom: none; }
+
+        /* =========================================================
+           核心功能：固定左侧时间列 (Sticky Column)
+           ========================================================= */
         .timetable .time-col {
+            position: sticky;
+            left: 0;
+            z-index: 10; /* 确保时间列浮在其他内容之上 */
             width: 90px;
             background-color: #1a1a1a;
             color: var(--text-muted);
             font-size: 12px;
-            border-right: 2px solid var(--border-color);
+            border-right: 2px solid var(--border-color) !important; /* 加粗右边框，形成视觉分割线 */
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3); /* 添加阴影，增强悬浮感 */
         }
-
-        /* 去掉最后一列的右边框和最后一行的下边框 */
-        .timetable th:last-child, .timetable td:last-child { border-right: none; }
-        .timetable tbody tr:last-child td { border-bottom: none; }
 
         /* 表头美化 */
         .timetable th {
@@ -237,6 +243,12 @@
             padding: 10px 6px;
             font-size: 14px;
             border-bottom: 2px solid var(--border-color);
+        }
+        
+        /* 表头的时间列需要更高的 z-index，防止被其他表头遮挡 */
+        .timetable th.time-col {
+            z-index: 20;
+            background-color: #1a1a1a;
         }
         
         .date-span {
@@ -481,33 +493,26 @@
         const today = new Date();
         const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
-        // 【修复】补全了周四的课程
+        // 课程数据库 (按周几和节次定义)
         const courses = [
             // 周一 (1)
             { day: 1, session: 1, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
             { day: 1, session: 2, name: '高级语言程序设计I', room: '10-B401', teacher: '王曼韬', color: 'c-blue' },
             { day: 1, session: 3, name: '物联网工程导论', room: '1-508', teacher: '蒲海波', color: 'c-orange' },
             { day: 1, session: 4, name: '大学英语AI', room: '10-B404', teacher: '翟永丽', color: 'c-green' },
-            
             // 周二 (2)
             { day: 2, session: 2, name: '大学体育I', room: '2校区运动场03', teacher: '张润桃', color: 'c-green' },
-            
             // 周三 (3)
             { day: 3, session: 1, name: '高级语言程序设计I', room: '10-B208', teacher: '王曼韬', color: 'c-blue' },
             { day: 3, session: 3, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
             { day: 3, session: 4, name: '思想道德与法治', room: '10-B403', teacher: '唐平', color: 'c-orange' },
-
-            // 【修复】周四 (4)
+            // 周四 (4)
             { day: 4, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
             { day: 4, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
-
             // 周五 (5)
             { day: 5, session: 1, name: '大学生心理健康与职业发...', room: '10-A404', teacher: '李云...', color: 'c-purple' },
             { day: 5, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
             { day: 5, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
-            
-            // 周六 (6) - 目前无课
-            // 周日 (7) - 目前无课
         ];
 
         for (let i = 0; i < 7; i++) {
