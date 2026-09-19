@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 关键：确保在手机上以正确的宽度和缩放比例显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>main.c - Visual Studio Code</title>
     <style>
         /* --- VS Code Dark+ 主题配色 --- */
@@ -37,14 +38,13 @@
             align-items: flex-start;
             min-height: 100vh;
             padding: 20px;
-            /* 全局基础字体放大 */
             font-size: 15px; 
             line-height: 1.5;
         }
 
         .vscode-window {
             width: 100%;
-            max-width: 1150px; /* 稍微放宽以容纳更大的字 */
+            max-width: 1150px;
             background-color: var(--vscode-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -60,7 +60,7 @@
             display: flex;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            height: 40px; /* 标签栏稍微加高 */
+            height: 40px;
         }
         
         .tab {
@@ -84,7 +84,7 @@
             min-height: 550px;
         }
 
-        /* --- 左侧活动栏 --- */
+        /* --- 左侧活动栏 (手机端隐藏) --- */
         .activity-bar {
             width: 50px;
             background-color: #333333;
@@ -112,6 +112,7 @@
             flex-direction: column;
             gap: 15px;
             background-color: var(--vscode-bg);
+            min-width: 0; /* 防止内容溢出 */
         }
 
         /* --- 搜索框 --- */
@@ -131,7 +132,6 @@
         /* --- 网址列表 --- */
         .link-list { 
             display: grid; 
-            /* 最小宽度加大，保证字体放大后一行不会太挤 */
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
             gap: 6px; 
             margin-bottom: 15px;
@@ -145,11 +145,11 @@
             text-decoration: none;
             transition: background-color 0.2s;
             font-size: 15px;
+            color: var(--text-main);
         }
         
         .code-line:hover { background-color: var(--hover-bg); }
         
-        /* 行号也放大 */
         .line-number {
             color: var(--text-muted);
             width: 30px;
@@ -159,7 +159,6 @@
             user-select: none;
         }
         
-        /* 语法高亮样式 */
         .syntax-macro { color: var(--syntax-macro); }
         .syntax-string { color: var(--syntax-string); }
         .syntax-comment { color: var(--syntax-comment); font-style: italic; }
@@ -177,14 +176,28 @@
         
         .highlight-date { color: var(--syntax-type); }
 
-        /* --- 课表区域 --- */
-        .timetable-container { overflow-x: auto; margin-top: 5px; }
+        /* --- 课表区域 (重点：横向滚动) --- */
+        .timetable-container { 
+            overflow-x: auto; 
+            margin-top: 5px;
+            /* 增加滚动条的视觉提示 */
+            padding-bottom: 5px;
+        }
         
+        /* 手机端滚动条美化 */
+        .timetable-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .timetable-container::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 3px;
+        }
+
         .timetable {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13.5px; /* 表格内容放大 */
-            min-width: 750px;
+            font-size: 13.5px;
+            min-width: 750px; /* 保证表格不会压缩得太小 */
             border: 1px solid var(--border-color);
         }
 
@@ -229,7 +242,6 @@
             line-height: 1.4;
         }
         
-        /* 课程文字放大 */
         .course-name { font-weight: bold; margin-bottom: 3px; font-size: 13px; }
         .course-info { font-size: 11.5px; color: var(--text-muted); }
 
@@ -258,6 +270,79 @@
         .status-left, .status-right { display: flex; gap: 15px; align-items: center;}
         .status-icon { font-size: 13px; }
 
+        /* =========================================================
+           媒体查询：专门针对手机屏幕的适配调整 (屏幕宽度小于 768px)
+           ========================================================= */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 5px; /* 手机端减少外围留白 */
+                font-size: 14px; /* 稍微缩小字体适应小屏 */
+            }
+            
+            .vscode-window {
+                border-radius: 0; /* 手机端取消圆角，全屏显示更自然 */
+                border: none;
+            }
+
+            /* 隐藏左侧活动栏，给主体内容留出空间 */
+            .activity-bar {
+                display: none;
+            }
+
+            .editor-area {
+                padding: 12px 10px; /* 缩小内边距 */
+                gap: 10px;
+            }
+
+            /* 搜索框调整 */
+            .search-line {
+                padding: 8px 10px;
+                gap: 6px;
+            }
+            .prompt-symbol { font-size: 13px; }
+            .search-line input { font-size: 14px; }
+
+            /* 链接列表：变成单列布局，保证每个链接都好点 */
+            .link-list { 
+                grid-template-columns: 1fr; /* 强制一列 */
+                gap: 4px;
+            }
+            
+            .code-line {
+                padding: 8px 10px; /* 增加点击区域高度 */
+                font-size: 14px;
+            }
+            
+            .line-number {
+                width: 22px;
+                margin-right: 10px;
+                font-size: 12px;
+            }
+
+            /* 课表区域调整 */
+            .timetable {
+                font-size: 12px;
+                min-width: 650px; /* 稍微缩小一点，减少滑动的距离 */
+            }
+            .timetable th { font-size: 12px; padding: 6px 4px; }
+            .timetable td { padding: 4px; }
+            
+            .course-name { font-size: 11.5px; }
+            .course-info { font-size: 10.5px; }
+            
+            .timetable .time-col { width: 65px; font-size: 11px; }
+
+            /* 状态栏调整 */
+            .status-bar {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            /* 手机端状态栏隐藏部分信息，避免拥挤 */
+            .status-right span:nth-child(2),
+            .status-right span:nth-child(3) {
+                display: none; /* 隐藏 "Spaces: 4" 和 "UTF-8" */
+            }
+        }
     </style>
 </head>
 <body>
@@ -274,7 +359,7 @@
         <!-- 主体区域 -->
         <div class="vscode-main">
             
-            <!-- 左侧活动栏 -->
+            <!-- 左侧活动栏 (手机端自动隐藏) -->
             <div class="activity-bar">
                 <div class="activity-icon active">📄</div>
                 <div class="activity-icon">🔍</div>
@@ -289,8 +374,8 @@
                 <!-- 搜索框 -->
                 <div class="search-line">
                     <span class="prompt-symbol">scanf("%s", buffer);</span>
-                    <form action="https://cn.bing.com/search" method="GET" target="_blank" style="flex-grow:1; display:flex; margin-left: 10px;">
-                        <input type="text" name="q" placeholder="// 输入搜索内容并回车..." required>
+                    <form action="https://cn.bing.com/search" method="GET" target="_blank" style="flex-grow:1; display:flex; margin-left: 5px;">
+                        <input type="text" name="q" placeholder="// 输入并回车..." required>
                     </form>
                 </div>
 
@@ -340,7 +425,7 @@
                     <span id="date-range-display" class="highlight-date">计算中...</span>
                 </div>
 
-                <!-- 课表区域 -->
+                <!-- 课表区域 (手机端可横向滑动) -->
                 <div class="timetable-container">
                     <table class="timetable">
                         <thead>
@@ -399,7 +484,6 @@
                     </table>
                 </div>
                 
-                <!-- 底部注释 -->
                 <div class="divider" style="border:none; margin-top:5px; text-align:right; font-size:12px;">
                     // return 0;
                 </div>
