@@ -7,20 +7,20 @@
     <style>
         /* --- VS Code Dark+ 主题配色 --- */
         :root {
-            --vscode-bg: #1e1e1e;         /* 编辑器背景 */
-            --vscode-sidebar: #252526;    /* 侧边栏背景 */
-            --vscode-tab-active: #1e1e1e; /* 活跃标签页 */
-            --vscode-tab-inactive: #2d2d2d;/* 非活跃标签页 */
-            --vscode-statusbar: #007acc;  /* 蓝色状态栏 */
+            --vscode-bg: #1e1e1e;
+            --vscode-sidebar: #252526;
+            --vscode-tab-active: #1e1e1e;
+            --vscode-tab-inactive: #2d2d2d;
+            --vscode-statusbar: #007acc;
             
-            --text-main: #d4d4d4;         /* 默认文字颜色 */
-            --text-muted: #858585;        /* 行号/次要文字 */
-            --syntax-comment: #6a9955;    /* 注释绿 */
-            --syntax-keyword: #c586c0;    /* 关键字紫 (struct, return) */
-            --syntax-string: #ce9178;     /* 字符串橙 */
-            --syntax-function: #569cd6;   /* 函数名蓝 */
-            --syntax-type: #4ec9b0;       /* 类型青 (int, char) */
-            --syntax-macro: #dcdcaa;      /* 宏定义黄 (#include) */
+            --text-main: #d4d4d4;
+            --text-muted: #858585;
+            --syntax-comment: #6a9955;
+            --syntax-keyword: #c586c0;
+            --syntax-string: #ce9178;
+            --syntax-function: #569cd6;
+            --syntax-type: #4ec9b0;
+            --syntax-macro: #dcdcaa;
             
             --border-color: #3e3e42;
             --hover-bg: #2a2d2e;
@@ -37,13 +37,14 @@
             align-items: flex-start;
             min-height: 100vh;
             padding: 20px;
-            line-height: 1.4;
+            /* 全局基础字体放大 */
+            font-size: 15px; 
+            line-height: 1.5;
         }
 
-        /* --- 模拟 VS Code 整体窗口 --- */
         .vscode-window {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1150px; /* 稍微放宽以容纳更大的字 */
             background-color: var(--vscode-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -59,14 +60,14 @@
             display: flex;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            height: 35px;
+            height: 40px; /* 标签栏稍微加高 */
         }
         
         .tab {
             background-color: var(--vscode-tab-active);
             color: var(--text-main);
             padding: 8px 15px;
-            font-size: 13px;
+            font-size: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -76,27 +77,27 @@
         
         .tab .icon-c { color: var(--syntax-function); font-weight: bold; }
 
-        /* --- 主体区域 (侧边栏 + 编辑器) --- */
+        /* --- 主体区域 --- */
         .vscode-main {
             display: flex;
             flex-grow: 1;
-            min-height: 500px;
+            min-height: 550px;
         }
 
         /* --- 左侧活动栏 --- */
         .activity-bar {
-            width: 48px;
+            width: 50px;
             background-color: #333333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 10px;
-            gap: 20px;
+            padding-top: 15px;
+            gap: 25px;
             border-right: 1px solid var(--border-color);
         }
         
         .activity-icon {
-            font-size: 20px;
+            font-size: 22px;
             color: var(--text-muted);
             cursor: pointer;
             transition: color 0.2s;
@@ -106,68 +107,69 @@
         /* --- 编辑器内容区 --- */
         .editor-area {
             flex-grow: 1;
-            padding: 15px 20px;
+            padding: 20px 25px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             background-color: var(--vscode-bg);
         }
 
-        /* --- 搜索框 (模拟 scanf 输入) --- */
+        /* --- 搜索框 --- */
         .search-line {
-            display: flex; align-items: center; gap: 8px;
-            background-color: #1e1e1e; padding: 6px 12px;
+            display: flex; align-items: center; gap: 10px;
+            background-color: #1e1e1e; padding: 10px 15px;
             border-radius: 4px; border: 1px solid var(--border-color);
             margin-bottom: 5px;
         }
-        .prompt-symbol { color: var(--syntax-function); font-size: 14px; }
+        .prompt-symbol { color: var(--syntax-function); font-size: 15px; }
         .search-line input {
             background: transparent; border: none; color: var(--syntax-string);
-            font-family: inherit; font-size: 14px; flex-grow: 1; outline: none;
+            font-family: inherit; font-size: 15px; flex-grow: 1; outline: none;
         }
-        .search-line input::placeholder { color: #555; }
+        .search-line input::placeholder { color: #666; }
 
-        /* --- 网址列表 (模拟 C 代码行) --- */
+        /* --- 网址列表 --- */
         .link-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 4px; /* 极小的间距，非常紧凑 */
-            margin-bottom: 10px;
+            /* 最小宽度加大，保证字体放大后一行不会太挤 */
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 6px; 
+            margin-bottom: 15px;
         }
         
         .code-line {
             display: flex;
             align-items: center;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 3px;
             text-decoration: none;
             transition: background-color 0.2s;
-            font-size: 13.5px;
+            font-size: 15px;
         }
         
         .code-line:hover { background-color: var(--hover-bg); }
         
-        /* 模拟行号 */
+        /* 行号也放大 */
         .line-number {
             color: var(--text-muted);
-            width: 25px;
+            width: 30px;
             text-align: right;
             margin-right: 15px;
-            font-size: 12px;
+            font-size: 13px;
             user-select: none;
         }
         
         /* 语法高亮样式 */
-        .syntax-macro { color: var(--syntax-macro); }     /* #include */
-        .syntax-string { color: var(--syntax-string); }   /* <...> */
-        .syntax-comment { color: var(--syntax-comment); font-style: italic; } /* // ... */
-        .syntax-function { color: var(--syntax-function); } /* 函数名 */
-        .syntax-keyword { color: var(--syntax-keyword); } /* 关键字 */
+        .syntax-macro { color: var(--syntax-macro); }
+        .syntax-string { color: var(--syntax-string); }
+        .syntax-comment { color: var(--syntax-comment); font-style: italic; }
+        .syntax-function { color: var(--syntax-function); }
+        .syntax-keyword { color: var(--syntax-keyword); }
 
-        /* --- 分隔线与注释 --- */
+        /* --- 分隔线 --- */
         .divider {
             color: var(--syntax-comment);
-            font-size: 12px;
+            font-size: 13px;
             margin: 10px 0;
             display: flex;
             justify-content: space-between;
@@ -175,38 +177,37 @@
         
         .highlight-date { color: var(--syntax-type); }
 
-        /* --- 课表区域 (模拟结构体) --- */
+        /* --- 课表区域 --- */
         .timetable-container { overflow-x: auto; margin-top: 5px; }
         
         .timetable {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
-            min-width: 700px;
+            font-size: 13.5px; /* 表格内容放大 */
+            min-width: 750px;
             border: 1px solid var(--border-color);
         }
 
         .timetable th, .timetable td {
             border: 1px solid var(--border-color);
-            padding: 4px;
+            padding: 6px;
             text-align: center;
             vertical-align: middle;
         }
 
-        /* 表头风格：像 C 语言结构体定义 */
         .timetable th {
             background-color: #1a1a1a;
             color: var(--syntax-type);
             font-weight: normal;
-            padding: 6px 4px;
-            font-size: 12px;
+            padding: 8px 6px;
+            font-size: 14px;
         }
         
         .date-span {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-muted);
             display: block;
-            margin-top: 2px;
+            margin-top: 3px;
         }
 
         .today-highlight {
@@ -215,51 +216,47 @@
         }
 
         .timetable .time-col {
-            width: 70px;
+            width: 80px;
             background-color: #1a1a1a;
             color: var(--text-muted);
-            font-size: 11px;
+            font-size: 12px;
         }
 
-        /* 课程卡片：像结构体成员变量 */
         .course-card {
-            border-radius: 2px;
-            padding: 3px 5px;
+            border-radius: 3px;
+            padding: 5px 8px;
             text-align: left;
-            line-height: 1.3;
+            line-height: 1.4;
         }
         
-        .course-name { font-weight: bold; margin-bottom: 2px; font-size: 11px; }
-        .course-info { font-size: 10px; color: var(--text-muted); }
+        /* 课程文字放大 */
+        .course-name { font-weight: bold; margin-bottom: 3px; font-size: 13px; }
+        .course-info { font-size: 11.5px; color: var(--text-muted); }
 
         /* C 语言主题色分类 */
-        .c-blue { border-left: 2px solid var(--syntax-function); }
+        .c-blue { border-left: 3px solid var(--syntax-function); }
         .c-blue .course-name { color: var(--syntax-function); }
-        
-        .c-purple { border-left: 2px solid var(--syntax-keyword); }
+        .c-purple { border-left: 3px solid var(--syntax-keyword); }
         .c-purple .course-name { color: var(--syntax-keyword); }
-        
-        .c-green { border-left: 2px solid var(--syntax-comment); }
+        .c-green { border-left: 3px solid var(--syntax-comment); }
         .c-green .course-name { color: var(--syntax-comment); }
-        
-        .c-orange { border-left: 2px solid var(--syntax-string); }
+        .c-orange { border-left: 3px solid var(--syntax-string); }
         .c-orange .course-name { color: var(--syntax-string); }
-        
-        .c-yellow { border-left: 2px solid var(--syntax-macro); }
+        .c-yellow { border-left: 3px solid var(--syntax-macro); }
         .c-yellow .course-name { color: var(--syntax-macro); }
 
         /* --- 底部状态栏 --- */
         .status-bar {
             background-color: var(--vscode-statusbar); 
             color: white; 
-            font-size: 11px; 
-            padding: 3px 15px;
+            font-size: 12px; 
+            padding: 5px 15px;
             display: flex; 
             justify-content: space-between;
             align-items: center;
         }
         .status-left, .status-right { display: flex; gap: 15px; align-items: center;}
-        .status-icon { font-size: 12px; }
+        .status-icon { font-size: 13px; }
 
     </style>
 </head>
@@ -289,7 +286,7 @@
             <!-- 编辑器内容区 -->
             <div class="editor-area">
                 
-                <!-- 搜索框：模拟 C 语言输入 -->
+                <!-- 搜索框 -->
                 <div class="search-line">
                     <span class="prompt-symbol">scanf("%s", buffer);</span>
                     <form action="https://cn.bing.com/search" method="GET" target="_blank" style="flex-grow:1; display:flex; margin-left: 10px;">
@@ -297,7 +294,7 @@
                     </form>
                 </div>
 
-                <!-- 网址列表：模拟带有行号的代码行 -->
+                <!-- 网址列表 -->
                 <div class="link-list">
                     
                     <a href="https://github.com" target="_blank" class="code-line">
@@ -335,10 +332,9 @@
                         <span class="syntax-comment">&nbsp;// 摸鱼</span>
                     </a>
                     
-                    <!-- 复制上面的 <a> 标签即可添加更多链接，行号可以手动改，也可以不管 -->
                 </div>
 
-                <!-- 课表头部注释：模拟结构体定义 -->
+                <!-- 课表头部注释 -->
                 <div class="divider">
                     <span>/* ===== struct CourseTable ===== */</span>
                     <span id="date-range-display" class="highlight-date">计算中...</span>
@@ -404,14 +400,14 @@
                 </div>
                 
                 <!-- 底部注释 -->
-                <div class="divider" style="border:none; margin-top:5px; text-align:right; font-size:11px;">
+                <div class="divider" style="border:none; margin-top:5px; text-align:right; font-size:12px;">
                     // return 0;
                 </div>
 
             </div>
         </div>
 
-        <!-- 底部状态栏 (VS Code 经典蓝色) -->
+        <!-- 底部状态栏 -->
         <div class="status-bar">
             <div class="status-left">
                 <span class="status-icon">🌿</span>
@@ -433,7 +429,6 @@
         const today = new Date();
         const currentDayOfWeek = today.getDay();
         
-        // 计算距离本周一的天数差
         const distanceToMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
         
         const mondayDate = new Date(today);
