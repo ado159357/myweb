@@ -24,12 +24,6 @@
             
             --border-color: #3e3e42;
             --hover-bg: #2a2d2e;
-            
-            --course-bg-blue: rgba(86, 156, 214, 0.15);
-            --course-bg-yellow: rgba(220, 220, 170, 0.15);
-            --course-bg-orange: rgba(206, 145, 120, 0.15);
-            --course-bg-green: rgba(106, 153, 85, 0.15);
-            --course-bg-purple: rgba(197, 134, 192, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,8 +48,7 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            /* 关键修复：不能在粘性定位的父级设置 overflow: hidden */
-            overflow: visible; 
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -67,8 +60,6 @@
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             height: 40px;
-            border-radius: 6px 6px 0 0; /* 补回圆角 */
-            overflow: hidden; /* 自身可以隐藏 */
         }
         
         .tab {
@@ -89,7 +80,7 @@
         .vscode-main {
             display: flex;
             flex-grow: 1;
-            min-height: 550px;
+            min-height: 500px;
         }
 
         /* --- 左侧活动栏 --- */
@@ -137,12 +128,22 @@
         }
         .search-line input::placeholder { color: #666; }
 
+        /* --- 分类分隔线 --- */
+        .divider {
+            color: var(--syntax-comment);
+            font-size: 13px;
+            margin: 20px 0 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+        .divider:first-of-type { margin-top: 0; }
+
         /* --- 网址列表 --- */
         .link-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
             gap: 6px; 
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
         
         .code-line {
@@ -173,136 +174,15 @@
         .syntax-function { color: var(--syntax-function); }
         .syntax-keyword { color: var(--syntax-keyword); }
 
-        /* --- 分隔线 --- */
-        .divider {
+        /* --- 底部注释 --- */
+        .footer-comment {
             color: var(--syntax-comment);
             font-size: 13px;
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .highlight-date { color: var(--syntax-type); }
-
-        /* =========================================================
-           课表美化核心区域
-           ========================================================= */
-        .timetable-container { 
-            /* 关键修复：只有这个滚动容器，才能实现内部的粘性定位 */
-            overflow-x: auto; 
-            margin-top: 5px;
-            padding-bottom: 10px;
-        }
-        
-        .timetable-container::-webkit-scrollbar { height: 8px; }
-        .timetable-container::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
-        .timetable-container::-webkit-scrollbar-track { background: #1e1e1e; }
-
-        .timetable {
-            width: 100%;
-            /* 关键修复：绝不能在这设置 overflow: hidden */
-            border-collapse: collapse; 
-            font-size: 13.5px;
-            min-width: 900px; 
-            border: 1px solid var(--border-color);
+            margin-top: 15px;
+            text-align: right;
         }
 
-        /* 单元格基础样式 */
-        .timetable th, .timetable td {
-            border-bottom: 1px solid var(--border-color);
-            padding: 8px;
-            text-align: center;
-            vertical-align: middle;
-            width: 110px;
-        }
-        
-        /* 用右边框形成网格线，最后一列除外 */
-        .timetable th:not(:last-child), .timetable td:not(:last-child) {
-            border-right: 1px solid var(--border-color);
-        }
-
-        /* =========================================================
-           核心功能：固定左侧时间列 (Sticky Column)
-           ========================================================= */
-        .timetable .time-col {
-            /* 关键修复：强化 iOS 兼容性 */
-            position: -webkit-sticky;
-            position: sticky;
-            left: 0;
-            z-index: 10;
-            width: 90px;
-            background-color: #1a1a1a;
-            color: var(--text-muted);
-            font-size: 12px;
-            /* 加粗右边框，形成视觉分割线 */
-            border-right: 2px solid var(--border-color) !important; 
-            /* 添加阴影，增强悬浮感 */
-            box-shadow: 2px 0 5px rgba(0,0,0,0.4); 
-        }
-
-        /* 表头美化 */
-        .timetable th {
-            background-color: #252526;
-            color: var(--syntax-type);
-            font-weight: normal;
-            padding: 10px 6px;
-            font-size: 14px;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        /* 表头的时间列需要更高的 z-index，防止被其他表头遮挡 */
-        .timetable th.time-col {
-            z-index: 20;
-            background-color: #1a1a1a;
-        }
-        
-        .date-span {
-            font-size: 11px;
-            color: var(--text-muted);
-            display: block;
-            margin-top: 4px;
-        }
-
-        .today-highlight {
-            color: var(--syntax-macro) !important;
-            font-weight: bold;
-        }
-
-        /* 课程卡片美化 */
-        .course-card {
-            border-radius: 4px;
-            padding: 6px 8px;
-            text-align: left;
-            line-height: 1.4;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: default;
-            border: 1px solid transparent;
-        }
-        
-        .course-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border-color: rgba(255,255,255,0.1);
-        }
-        
-        .course-name { font-weight: bold; margin-bottom: 4px; font-size: 13px; }
-        .course-info { font-size: 11.5px; color: var(--text-muted); }
-
-        /* C 语言主题色分类 */
-        .c-blue { background-color: var(--course-bg-blue); border-left: 3px solid var(--syntax-function); }
-        .c-blue .course-name { color: var(--syntax-function); }
-        .c-purple { background-color: var(--course-bg-purple); border-left: 3px solid var(--syntax-keyword); }
-        .c-purple .course-name { color: var(--syntax-keyword); }
-        .c-green { background-color: var(--course-bg-green); border-left: 3px solid var(--syntax-comment); }
-        .c-green .course-name { color: var(--syntax-comment); }
-        .c-orange { background-color: var(--course-bg-orange); border-left: 3px solid var(--syntax-string); }
-        .c-orange .course-name { color: var(--syntax-string); }
-        .c-yellow { background-color: var(--course-bg-yellow); border-left: 3px solid var(--syntax-macro); }
-        .c-yellow .course-name { color: var(--syntax-macro); }
-
-        /* =========================================================
-           底部状态栏
-           ========================================================= */
+        /* --- 底部状态栏 --- */
         .status-bar {
             background-color: var(--vscode-statusbar); 
             color: white; 
@@ -311,7 +191,6 @@
             display: flex; 
             justify-content: space-between;
             align-items: center;
-            border-radius: 0 0 6px 6px; /* 补回圆角 */
         }
         .status-left, .status-right { display: flex; gap: 15px; align-items: center;}
         .status-icon { font-size: 13px; }
@@ -322,8 +201,6 @@
         @media screen and (max-width: 768px) {
             body { padding: 5px; font-size: 14px; }
             .vscode-window { border-radius: 0; border: none; }
-            .vscode-tabs { border-radius: 0; }
-            .status-bar { border-radius: 0; }
             .activity-bar { display: none; }
             .editor-area { padding: 12px 10px; gap: 10px; }
             .search-line { padding: 8px 10px; gap: 6px; }
@@ -332,15 +209,6 @@
             .link-list { grid-template-columns: 1fr; gap: 4px; }
             .code-line { padding: 8px 10px; font-size: 14px; }
             .line-number { width: 22px; margin-right: 10px; font-size: 12px; }
-            
-            .timetable { font-size: 12px; min-width: 750px; }
-            .timetable th { font-size: 12px; padding: 8px 4px; }
-            .timetable td { padding: 6px; }
-            .course-name { font-size: 11.5px; }
-            .course-info { font-size: 10.5px; }
-            .timetable .time-col { width: 75px; font-size: 11px; }
-            .course-card { padding: 4px 6px; }
-            
             .status-bar { font-size: 10px; padding: 4px 10px; }
             .status-right span:nth-child(2),
             .status-right span:nth-child(3) { display: none; }
@@ -375,111 +243,167 @@
                     </form>
                 </div>
 
+                <!-- ========== 学习与课程 ========== -->
+                <div class="divider">
+                    <span>/* ===== 学习与课程 ===== */</span>
+                </div>
                 <div class="link-list">
-                    <a href="https://github.com" target="_blank" class="code-line">
+                    <a href="https://www.icourse163.org/" target="_blank" class="code-line">
                         <span class="line-number">1</span>
                         <span class="syntax-macro">#include</span> 
-                        <span class="syntax-string">&lt;github.com&gt;</span>
-                        <span class="syntax-comment">&nbsp;// 代码托管</span>
+                        <span class="syntax-string">&lt;icourse163.org&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 中国大学MOOC</span>
+                    </a>
+                    <a href="https://www.xuetangx.com/" target="_blank" class="code-line">
+                        <span class="line-number">2</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;xuetangx.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 学堂在线</span>
                     </a>
                     <a href="https://www.bilibili.com" target="_blank" class="code-line">
-                        <span class="line-number">2</span>
+                        <span class="line-number">3</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;bilibili.com&gt;</span>
                         <span class="syntax-comment">&nbsp;// 学习/摸鱼</span>
                     </a>
-                    <a href="https://chat.deepseek.com/" target="_blank" class="code-line">
-                        <span class="line-number">3</span>
-                        <span class="syntax-macro">#include</span> 
-                        <span class="syntax-string">&lt;deepseek.com&gt;</span>
-                        <span class="syntax-comment">&nbsp;// AI 辅助</span>
-                    </a>
-                    <a href="#" target="_blank" class="code-line">
+                    <a href="https://open.163.com/" target="_blank" class="code-line">
                         <span class="line-number">4</span>
                         <span class="syntax-macro">#include</span> 
-                        <span class="syntax-string">&lt;教务系统&gt;</span>
-                        <span class="syntax-comment">&nbsp;// 查成绩</span>
+                        <span class="syntax-string">&lt;open.163.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 网易公开课</span>
                     </a>
-                    <a href="https://www.icourse163.org/" target="_blank" class="code-line">
+                    <a href="https://www.ted.com/" target="_blank" class="code-line">
                         <span class="line-number">5</span>
                         <span class="syntax-macro">#include</span> 
-                        <span class="syntax-string">&lt;icourse163.org&gt;</span>
-                        <span class="syntax-comment">&nbsp;// MOOC</span>
+                        <span class="syntax-string">&lt;ted.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// TED 演讲</span>
                     </a>
-                     <a href="https://examcrafts.com/" target="_blank" class="code-line">
+                    <a href="https://examcrafts.com/" target="_blank" class="code-line">
                         <span class="line-number">6</span>
                         <span class="syntax-macro">#include</span> 
                         <span class="syntax-string">&lt;examcrafts.com&gt;</span>
                         <span class="syntax-comment">&nbsp;// 智能学习</span>
                     </a>
+                    <a href="#" target="_blank" class="code-line">
+                        <span class="line-number">7</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;教务系统&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 查成绩</span>
+                    </a>
                 </div>
 
+                <!-- ========== 学术与论文 ========== -->
                 <div class="divider">
-                    <span>/* ===== struct CourseTable ===== */</span>
-                    <span id="date-range-display" class="highlight-date">学习中...</span>
+                    <span>/* ===== 学术与论文 ===== */</span>
+                </div>
+                <div class="link-list">
+                    <a href="https://www.cnki.net/" target="_blank" class="code-line">
+                        <span class="line-number">1</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;cnki.net&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 中国知网</span>
+                    </a>
+                    <a href="https://www.wanfangdata.com.cn/" target="_blank" class="code-line">
+                        <span class="line-number">2</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;wanfangdata.com.cn&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 万方数据</span>
+                    </a>
+                    <a href="https://scholar.google.com/" target="_blank" class="code-line">
+                        <span class="line-number">3</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;scholar.google.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 谷歌学术</span>
+                    </a>
+                    <a href="https://www.calis.edu.cn/" target="_blank" class="code-line">
+                        <span class="line-number">4</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;calis.edu.cn&gt;</span>
+                        <span class="syntax-comment">&nbsp;// CALIS 图书馆</span>
+                    </a>
                 </div>
 
-                <!-- 课表区域 -->
-                <div class="timetable-container">
-                    <table class="timetable">
-                        <thead>
-                            <tr>
-                                <th class="time-col">time_t</th>
-                                <th id="head-1">--</th>
-                                <th id="head-2">--</th>
-                                <th id="head-3">--</th>
-                                <th id="head-4">--</th>
-                                <th id="head-5">--</th>
-                                <th id="head-6">--</th>
-                                <th id="head-7">--</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="time-col">08:10<br>~<br>09:50</td>
-                                <td id="cell-1-1"></td>
-                                <td id="cell-1-2"></td>
-                                <td id="cell-1-3"></td>
-                                <td id="cell-1-4"></td>
-                                <td id="cell-1-5"></td>
-                                <td id="cell-1-6"></td>
-                                <td id="cell-1-7"></td>
-                            </tr>
-                            <tr>
-                                <td class="time-col">10:10<br>~<br>11:50</td>
-                                <td id="cell-2-1"></td>
-                                <td id="cell-2-2"></td>
-                                <td id="cell-2-3"></td>
-                                <td id="cell-2-4"></td>
-                                <td id="cell-2-5"></td>
-                                <td id="cell-2-6"></td>
-                                <td id="cell-2-7"></td>
-                            </tr>
-                            <tr>
-                                <td class="time-col">14:20<br>~<br>16:00</td>
-                                <td id="cell-3-1"></td>
-                                <td id="cell-3-2"></td>
-                                <td id="cell-3-3"></td>
-                                <td id="cell-3-4"></td>
-                                <td id="cell-3-5"></td>
-                                <td id="cell-3-6"></td>
-                                <td id="cell-3-7"></td>
-                            </tr>
-                            <tr>
-                                <td class="time-col">19:30<br>~<br>21:10</td>
-                                <td id="cell-4-1"></td>
-                                <td id="cell-4-2"></td>
-                                <td id="cell-4-3"></td>
-                                <td id="cell-4-4"></td>
-                                <td id="cell-4-5"></td>
-                                <td id="cell-4-6"></td>
-                                <td id="cell-4-7"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- ========== 工具与实用 ========== -->
+                <div class="divider">
+                    <span>/* ===== 工具与实用 ===== */</span>
                 </div>
-                
-                <div class="divider" style="border:none; margin-top:5px; text-align:right; font-size:12px;">
+                <div class="link-list">
+                    <a href="https://www.runoob.com/" target="_blank" class="code-line">
+                        <span class="line-number">1</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;runoob.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 菜鸟教程</span>
+                    </a>
+                    <a href="https://www.wolframalpha.com/" target="_blank" class="code-line">
+                        <span class="line-number">2</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;wolframalpha.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 计算引擎</span>
+                    </a>
+                    <a href="https://www.ilovepdf.com/" target="_blank" class="code-line">
+                        <span class="line-number">3</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;ilovepdf.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// PDF 工具</span>
+                    </a>
+                    <a href="https://mubu.com/" target="_blank" class="code-line">
+                        <span class="line-number">4</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;mubu.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 幕布笔记</span>
+                    </a>
+                    <a href="https://www.examcoo.com/" target="_blank" class="code-line">
+                        <span class="line-number">5</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;examcoo.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 考试酷题库</span>
+                    </a>
+                    <a href="https://chat.deepseek.com/" target="_blank" class="code-line">
+                        <span class="line-number">6</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;deepseek.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// AI 辅助</span>
+                    </a>
+                    <a href="https://github.com" target="_blank" class="code-line">
+                        <span class="line-number">7</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;github.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 代码托管</span>
+                    </a>
+                </div>
+
+                <!-- ========== 求职与考证 ========== -->
+                <div class="divider">
+                    <span>/* ===== 求职与考证 ===== */</span>
+                </div>
+                <div class="link-list">
+                    <a href="https://www.wondercv.com/" target="_blank" class="code-line">
+                        <span class="line-number">1</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;wondercv.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 超级简历</span>
+                    </a>
+                    <a href="http://www.cpta.com.cn/" target="_blank" class="code-line">
+                        <span class="line-number">2</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;cpta.com.cn&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 人事考试网</span>
+                    </a>
+                    <a href="https://yz.chsi.com.cn/" target="_blank" class="code-line">
+                        <span class="line-number">3</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;yz.chsi.com.cn&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 研招网</span>
+                    </a>
+                    <a href="https://www.iguopin.com/" target="_blank" class="code-line">
+                        <span class="line-number">4</span>
+                        <span class="syntax-macro">#include</span> 
+                        <span class="syntax-string">&lt;iguopin.com&gt;</span>
+                        <span class="syntax-comment">&nbsp;// 国聘</span>
+                    </a>
+                </div>
+
+                <div class="footer-comment">
                     // return 0;
                 </div>
 
@@ -502,69 +426,5 @@
         </div>
     </div>
 
-    <!-- ========== 核心逻辑 ========== -->
-    <script>
-        const today = new Date();
-        const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-
-        // 【修复】补全了周四的课程
-        const courses = [
-            // 周一 (1)
-            { day: 1, session: 1, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
-            { day: 1, session: 2, name: '高级语言程序设计I', room: '10-B401', teacher: '王曼韬', color: 'c-blue' },
-            { day: 1, session: 3, name: '物联网工程导论', room: '1-508', teacher: '蒲海波', color: 'c-orange' },
-            { day: 1, session: 4, name: '大学英语AI', room: '10-B404', teacher: '翟永丽', color: 'c-green' },
-            // 周二 (2)
-            { day: 2, session: 2, name: '大学体育I', room: '2校区运动场03', teacher: '张润桃', color: 'c-green' },
-            // 周三 (3)
-            { day: 3, session: 1, name: '高级语言程序设计I', room: '10-B208', teacher: '王曼韬', color: 'c-blue' },
-            { day: 3, session: 3, name: '高等数学AI', room: '10-B208', teacher: '黄厚辉', color: 'c-yellow' },
-            { day: 3, session: 4, name: '思想道德与法治', room: '10-B403', teacher: '唐平', color: 'c-orange' },
-            // 周四 (4) 【修复】
-            { day: 4, session: 2, name: '高等数学AI', room: '10-A302', teacher: '黄厚辉', color: 'c-yellow' },
-            //{ day: 4, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
-            //{ day: 4, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
-            // 周五 (5)
-            { day: 5, session: 1, name: '大学生心理健康与职业发...', room: '10-A404', teacher: '李云...', color: 'c-purple' },
-            { day: 5, session: 2, name: '大学英语AI', room: '10-A304', teacher: '翟永丽', color: 'c-green' },
-            { day: 5, session: 3, name: '思想道德与法治', room: '10-B208', teacher: '唐平', color: 'c-orange' },
-        ];
-
-        for (let i = 0; i < 7; i++) {
-            const currentDate = new Date(today);
-            currentDate.setDate(today.getDate() + i);
-            
-            const month = currentDate.getMonth() + 1;
-            const date = currentDate.getDate();
-            const dayOfWeek = currentDate.getDay();
-            
-            const dayName = dayNames[dayOfWeek];
-
-            const headElement = document.getElementById(`head-${i + 1}`);
-            if (headElement) {
-                let html = `${dayName} <span class="date-span ${i === 0 ? 'today-highlight' : ''}">`;
-                html += i === 0 ? `${month}/${date} (今天)` : `${month}/${date}`;
-                html += `</span>`;
-                headElement.innerHTML = html;
-            }
-            
-            let targetDayIndex = dayOfWeek;
-            if (targetDayIndex === 0) targetDayIndex = 7;
-            
-            courses.forEach(course => {
-                if (course.day === targetDayIndex) {
-                    const cell = document.getElementById(`cell-${course.session}-${i + 1}`);
-                    if (cell) {
-                        cell.innerHTML = `
-                            <div class="course-card ${course.color}">
-                                <div class="course-name">${course.name}</div>
-                                <div class="course-info">${course.room}<br>${course.teacher}</div>
-                            </div>
-                        `;
-                    }
-                }
-            });
-        }
-    </script>
 </body>
 </html>
