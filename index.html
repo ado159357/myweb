@@ -2,155 +2,82 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>学习动态</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --primary: #10b981;
-    --text: #1f2937;
-    --text-light: #6b7280;
-    --border: #e5e7eb;
-    --bg-soft: #f9fafb;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f766e 0%, #4f46e5 100%);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 48px 16px;
-    color: var(--text);
-    -webkit-font-smoothing: antialiased;
-  }
-  .app {
-    width: 100%;
-    max-width: 560px;
-    background: #fff;
-    border-radius: 22px;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
-    padding: 30px 28px 22px;
-    animation: rise .5s cubic-bezier(.2,.8,.3,1);
-  }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  header h1 { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 9px; }
-  header h1 .emoji { font-size: 26px; }
-  .subtitle { font-size: 13px; color: var(--text-light); margin-top: 6px; }
-  #list { list-style: none; margin-top: 22px; max-height: 60vh; overflow-y: auto; padding-right: 4px; }
-  #list::-webkit-scrollbar { width: 6px; }
-  #list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
-  .task {
-    display: flex; align-items: flex-start; gap: 11px; padding: 13px 12px;
-    border-radius: 12px; border: 1px solid transparent; transition: background .18s;
-    animation: slideIn .28s cubic-bezier(.2,.8,.3,1);
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-12px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  .task:hover { background: var(--bg-soft); border-color: var(--border); }
-  .badge {
-    flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
-    border-radius: 50%; background: var(--primary); color: #fff;
-    font-size: 12px; font-weight: 700; display: flex;
-    align-items: center; justify-content: center;
-    box-shadow: 0 2px 6px rgba(16,185,129,.35);
-  }
-  .task-body { flex: 1; min-width: 0; }
-  .task-text { font-size: 15px; line-height: 1.45; word-break: break-word; }
-  .task-time { display: block; font-size: 11.5px; color: #9ca3af; margin-top: 4px; font-variant-numeric: tabular-nums; }
-  footer {
-    display: flex; justify-content: center; align-items: center;
-    margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
-    font-size: 13px; color: var(--text-light); min-height: 48px;
-  }
-  @media (max-width: 520px) {
-    body { padding: 20px 12px; }
-    .app { padding: 24px 18px 16px; border-radius: 18px; }
-    header h1 { font-size: 20px; }
-  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;background:#0f172a;color:#f8fafc;display:flex;padding:40px;overflow-x:hidden}
+  
+  /* 背景人像：自然渐隐过渡 */
+  .bg{position:fixed;right:0;bottom:0;width:55vw;height:100vh;background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.1) 25%,rgba(0,0,0,.8) 60%,black 85%);mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.1) 25%,rgba(0,0,0,.8) 60%,black 85%);filter:brightness(.8) contrast(1.1);opacity:.65;pointer-events:none;z-index:1}
+  
+  /* 左侧内容区 */
+  .app{position:relative;z-index:2;width:100%;max-width:560px;display:flex;flex-direction:column;gap:20px}
+  h1{font-size:22px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .sub{font-size:13px;color:#94a3b8;margin-top:-10px}
+  
+  /* 列表 */
+  #list{list-style:none;display:flex;flex-direction:column;gap:12px;max-height:65vh;overflow-y:auto;padding-right:6px}
+  #list::-webkit-scrollbar{width:4px}
+  #list::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
+  .task{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;display:flex;gap:14px;transition:.2s}
+  .task:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15)}
+  
+  /* 方案四：圆角方形对勾 */
+  .badge{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);box-shadow:0 0 8px rgba(16,185,129,.1);color:#10b981;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+  .bd{flex:1;min-width:0}
+  .txt{font-size:15px;line-height:1.5;word-break:break-word}
+  .tm{display:block;font-size:12px;color:#64748b;margin-top:6px;font-variant-numeric:tabular-nums}
+  footer{font-size:13px;color:#94a3b8;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+  
+  /* 移动端 */
+  @media(max-width:768px){body{padding:24px 16px}.bg{width:100vw;opacity:.15;filter:none}}
 </style>
 </head>
 <body>
-
-<div class="app">
-  <header>
-    <h1><span class="emoji">🏆</span>学习动态更新</h1>
-    <p class="subtitle">这里记录着已经完成的项目</p>
-  </header>
-  <ul id="list"></ul>
-  <footer><span id="footerHint">还没有记录</span></footer>
-</div>
+  <div class="bg"></div>
+  <div class="app">
+    <h1>💻 学习动态更新</h1>
+    <p class="sub">这里记录着已经完成的项目</p>
+    <ul id="list"></ul>
+    <footer id="ft"></footer>
+  </div>
 
 <script>
-(function () {
-  'use strict';
-
-  // ✅ 你的学习记录，已原样保留
-  var DEFAULT_RECORDS = [
-    { text: 'C语言实现哈希表3--冲突处理:链地址法',       time: '2026-10-10 23:00' },
-    { text: '704.二分查找-力扣(LeetCode)--简单',       time: '2026-10-10 15:00' },
-    { text: 'C语言实现哈希表2--哈希函数的设计',       time: '2026-10-10 12:00' },
-    { text: 'C语言实现哈希表1--哈希表的基本概念与结构设计',       time: '2026-10-09 23:00' },
-    { text: '2841.几乎唯一子数组的最大和-力扣(LeetCode)--中等',       time: '2026-10-07 20:00' },
+  // 你的学习记录
+  const data = [
+    { t: 'C语言实现哈希表3--冲突处理：链地址法', d: '2026-10-10 23:00' },
+    { t: '704.二分查找-力扣(LeetCode)--简单', d: '2026-10-10 15:00' },
+    { t: 'C语言实现哈希表2--哈希函数的设计', d: '2026-10-10 12:00' },
+    { t: 'C语言实现哈希表1--哈希表的基本概念与结构设计', d: '2026-10-09 23:00' },
+    { t: '2841.几乎唯一子数组的最大和-力扣(LeetCode)--中等', d: '2026-10-07 20:00' }
   ];
 
-  var listEl = document.getElementById('list');
-  var footerHint = document.getElementById('footerHint');
-  var pad = function (n) { return String(n).padStart(2, '0'); };
+  const pad = n => String(n).padStart(2, '0');
+  
+  // 格式化时间（利用 toDateString 极简判断今天/昨天）
+  const fmt = ts => {
+    const n = new Date(), d = new Date(ts);
+    const t = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    if (d.toDateString() === n.toDateString()) return `今天 ${t}`;
+    const y = new Date(n); y.setDate(n.getDate() - 1);
+    if (d.toDateString() === y.toDateString()) return `昨天 ${t}`;
+    return `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${t}`;
+  };
 
-  // 解析时间字符串为时间戳
-  function parseTime(str) {
-    var m = String(str).match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?$/);
-    if (!m) return Date.now();
-    return new Date(m[1], m[2] - 1, m[3], m[4] || 0, m[5] || 0).getTime();
-  }
-
-  // 判断是否是同一天
-  function isSameDay(ts, ref) {
-    var a = new Date(ts), b = new Date(ref);
-    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-  }
-
-  // 格式化时间标签
-  function timeLabel(ts) {
-    var d = new Date(ts), now = new Date();
-    var timeStr = pad(d.getHours()) + ':' + pad(d.getMinutes());
-    if (isSameDay(ts, now)) return '今天 ' + timeStr;
+  // 数据排序与渲染
+  const recs = data.map(r => ({ txt: r.t, ts: new Date(r.d.replace(/-/g, '/')).getTime() })).sort((a, b) => b.ts - a.ts);
+  
+  document.getElementById('list').innerHTML = recs.map(r => `
+    <li class="task">
+      <span class="badge">✓</span>
+      <div class="bd">
+        <p class="txt">${r.txt}</p>
+        <span class="tm">${fmt(r.ts)}</span>
+      </div>
+    </li>`).join('');
     
-    var yest = new Date(now);
-    yest.setDate(now.getDate() - 1);
-    if (isSameDay(ts, yest)) return '昨天 ' + timeStr;
-    
-    return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) + ' ' + timeStr;
-  }
-
-  // 处理数据并按时间倒序
-  var records = DEFAULT_RECORDS.map(function (r) {
-    return { text: r.text, ts: parseTime(r.time) };
-  }).sort(function (a, b) { return b.ts - a.ts; });
-
-  // 渲染页面
-  if (records.length === 0) {
-    listEl.innerHTML = '<li style="text-align:center;padding:52px;color:#9ca3af;font-size:14px;">🌱<br>还没有完成记录</li>';
-    footerHint.textContent = '还没有记录';
-  } else {
-    listEl.innerHTML = records.map(function (t) {
-      return '<li class="task">' +
-        '<span class="badge">✓</span>' +
-        '<div class="task-body">' +
-          '<p class="task-text">' + t.text + '</p>' +
-          '<span class="task-time">' + timeLabel(t.ts) + '</span>' +
-        '</div>' +
-      '</li>';
-    }).join('');
-    footerHint.textContent = '共 ' + records.length + ' 条记录';
-  }
-})();
+  document.getElementById('ft').textContent = `共 ${recs.length} 条记录`;
 </script>
 </body>
 </html>
