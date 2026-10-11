@@ -18,8 +18,11 @@
   ul::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
   .task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:flex-start;transition:.2s}
   .task:hover{background:#2d3b4f;border-color:#475569}
-  .badge{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#f8fafc;display:flex;align-items:center;justify-content:center;margin-top:2px}
-  .badge svg{width:12px;height:12px;display:block;margin:auto;transform:translateY(3px)}
+  
+  /* 👇 修改：将圆角从 50% 改为 5px，变成方形 */
+  .badge{flex-shrink:0;width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#f8fafc;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  
+  .badge svg{width:12px;height:12px;display:block;margin:auto;transform:translateY(4px)}
   .task>div{flex:1;min-width:0}
   .task p{color:#f1f5f9;font-size:15px;line-height:1.5;word-break:break-word}
   .task span{font-size:12px;color:#94a3b8;margin-top:6px;display:block}
@@ -30,8 +33,9 @@
     .app{padding:24px 16px;max-width:100%}
     ul{max-height:none;overflow-y:visible}
     .task{padding:14px 12px;gap:10px}
-    .badge{width:20px;height:20px;margin-top:1px}
-    .badge svg{width:10px;height:10px;transform:translateY(2.5px)}
+    /* 👇 移动端同样改为方形 */
+    .badge{width:20px;height:20px;border-radius:4px;margin-top:1px}
+    .badge svg{width:10px;height:10px;transform:translateY(4px)}
     .task p{font-size:14px}
   }
 </style>
