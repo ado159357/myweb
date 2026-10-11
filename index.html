@@ -6,32 +6,47 @@
 <title>学习动态</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,sans-serif;background:#0f172a;display:flex;justify-content:center;min-height:100vh;color:#f8fafc;overflow-x:hidden}
-  /* 限宽居中容器，强制统一背景色 */
-  .container{position:relative;max-width:1200px;width:100%;min-height:100vh;display:flex;overflow:hidden;background:#0f172a}
-  /* 右侧图灵：左右双向渐隐，融入深色背景 */
-  .bg{position:absolute;right:0;bottom:0;width:60%;height:100%;background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);filter:brightness(.8) contrast(1.1);opacity:.65;pointer-events:none;z-index:1}
+  /* 页面背景铺满，统一深色 */
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;background:#0f172a;display:flex;justify-content:center;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  
+  /* 限制主容器最大宽度并居中，强制统一背景色 */
+  .container{position:relative;width:100%;max-width:1200px;min-height:100vh;display:flex;overflow:hidden;background:#0f172a}
+  
+  /* 右侧渐隐人像 */
+  .bg{
+    position:absolute;right:0;bottom:0;width:60%;height:100%;
+    background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;
+    /* 核心修改：左侧渐显，右侧渐隐，让图片两侧都融入背景 */
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+    mask-image:linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+    filter:brightness(.8) contrast(1.1);
+    opacity:.65;
+    pointer-events:none;z-index:1
+  }
+  
   /* 左侧内容区 */
-  .app{position:relative;z-index:2;max-width:560px;width:100%;padding:48px 40px;display:flex;flex-direction:column;gap:20px}
-  h1{font-size:22px;display:flex;align-items:center;gap:8px}
-  .app > p{font-size:13px;color:#94a3b8;margin-top:-10px}
-  /* 列表滚动区 */
-  ul{list-style:none;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 220px);overflow-y:auto;padding-right:6px}
-  ul::-webkit-scrollbar{width:4px}
-  ul::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
-  /* 纯色卡片防反转 */
+  .app{position:relative;z-index:2;width:100%;max-width:560px;padding:48px 40px;display:flex;flex-direction:column;gap:20px}
+  h1{font-size:22px;font-weight:700;display:flex;align-items:center;gap:8px;color:#f8fafc}
+  .sub{font-size:13px;color:#94a3b8;margin-top:-10px}
+  
+  #list{list-style:none;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 220px);overflow-y:auto;padding-right:6px}
+  #list::-webkit-scrollbar{width:4px}
+  #list::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
+  
   .task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;transition:.2s}
   .task:hover{background:#2d3b4f;border-color:#475569}
+  
   .badge{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#064e3b;border:1px solid #10b981;color:#34d399;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center}
-  .task p{color:#f1f5f9;font-size:15px;line-height:1.5;word-break:break-word}
-  .task span{font-size:12px;color:#94a3b8;margin-top:6px;display:block}
+  .bd{flex:1;min-width:0}
+  .txt{font-size:15px;line-height:1.5;word-break:break-word;color:#f1f5f9}
+  .tm{display:block;font-size:12px;color:#94a3b8;margin-top:6px;font-variant-numeric:tabular-nums}
   footer{font-size:13px;color:#94a3b8;padding-top:16px;border-top:1px solid #334155}
-  /* 移动端极简适配 */
+  
   @media(max-width:768px){
-    .container{display:block}
-    .bg{position:fixed;width:100%;height:100%;opacity:.15;filter:brightness(.6);-webkit-mask-image:none;mask-image:none}
-    .app{padding:32px 20px;max-width:100%}
-    ul{max-height:none;overflow-y:visible}
+    .container{display:block;max-width:100%;min-height:100vh}
+    .bg{position:fixed;width:100%;height:100%;opacity:0.15;filter:brightness(0.6);-webkit-mask-image:none;mask-image:none;z-index:0}
+    .app{padding:32px 20px;max-width:100%;min-height:100vh;position:relative;z-index:1}
+    #list{max-height:none;overflow-y:visible}
   }
 </style>
 </head>
@@ -40,16 +55,15 @@
     <div class="bg"></div>
     <div class="app">
       <h1>💻 学习动态更新</h1>
-      <p>这里记录着已经完成的项目</p>
+      <p class="sub">这里记录着已经完成的项目</p>
       <ul id="list"></ul>
       <footer id="ft"></footer>
     </div>
   </div>
 
 <script>
-  // 你的学习记录
   const data = [
-    { t: 'C语言实现哈希表3--冲突处理:链地址法', d: '2026-10-10 23:00' },
+    { t: 'C语言实现哈希表3--冲突处理：链地址法', d: '2026-10-10 23:00' },
     { t: '704.二分查找-力扣(LeetCode)--简单', d: '2026-10-10 15:00' },
     { t: 'C语言实现哈希表2--哈希函数的设计', d: '2026-10-10 12:00' },
     { t: 'C语言实现哈希表1--哈希表的基本概念与结构设计', d: '2026-10-09 23:00' },
@@ -65,15 +79,16 @@
     return `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${t}`;
   };
 
-  document.getElementById('list').innerHTML = data.map(r => ({ t: r.t, ts: new Date(r.d.replace(/-/g, '/')).getTime() })).sort((a, b) => b.ts - a.ts).map(r => `
+  const recs = data.map(r => ({ txt: r.t, ts: new Date(r.d.replace(/-/g, '/')).getTime() })).sort((a, b) => b.ts - a.ts);
+  document.getElementById('list').innerHTML = recs.map(r => `
     <li class="task">
       <span class="badge">✓</span>
-      <div>
-        <p>${r.t}</p>
-        <span>${fmt(r.ts)}</span>
+      <div class="bd">
+        <p class="txt">${r.txt}</p>
+        <span class="tm">${fmt(r.ts)}</span>
       </div>
     </li>`).join('');
-  document.getElementById('ft').textContent = `共 ${data.length} 条记录`;
+  document.getElementById('ft').textContent = `共 ${recs.length} 条记录`;
 </script>
 </body>
 </html>
