@@ -9,13 +9,13 @@
   /* 页面整体背景铺满 */
   body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;background:#0f172a;display:flex;justify-content:center;overflow-x:hidden;-webkit-font-smoothing:antialiased}
   
-  /* 👇 核心修改：限制主容器最大宽度并居中 */
+  /* 限制主容器最大宽度并居中 */
   .container{position:relative;width:100%;max-width:1200px;min-height:100vh;display:flex;overflow:hidden}
   
-  /* 右侧渐隐人像（相对容器右侧） */
+  /* 右侧渐隐人像（桌面端） */
   .bg{position:absolute;right:0;bottom:0;width:55%;height:100%;background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.1) 25%,rgba(0,0,0,.8) 60%,black 85%);mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.1) 25%,rgba(0,0,0,.8) 60%,black 85%);filter:brightness(.8) contrast(1.1);opacity:.65;pointer-events:none;z-index:1}
   
-  /* 左侧内容区 */
+  /* 左侧内容区（桌面端） */
   .app{position:relative;z-index:2;width:100%;max-width:560px;padding:48px 40px;display:flex;flex-direction:column;gap:20px}
   h1{font-size:22px;font-weight:700;display:flex;align-items:center;gap:8px;color:#f8fafc}
   .sub{font-size:13px;color:#94a3b8;margin-top:-10px}
@@ -25,23 +25,48 @@
   #list::-webkit-scrollbar{width:4px}
   #list::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
   
-  /* 卡片：绝对纯色 */
+  /* 卡片：绝对纯色防反转 */
   .task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;transition:.2s}
   .task:hover{background:#2d3b4f;border-color:#475569}
   
-  /* 方案四：圆角方形对勾 */
+  /* 圆角方形对勾 */
   .badge{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#064e3b;border:1px solid #10b981;color:#34d399;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center}
   .bd{flex:1;min-width:0}
   .txt{font-size:15px;line-height:1.5;word-break:break-word;color:#f1f5f9}
   .tm{display:block;font-size:12px;color:#94a3b8;margin-top:6px;font-variant-numeric:tabular-nums}
   footer{font-size:13px;color:#94a3b8;padding-top:16px;border-top:1px solid #334155}
   
-  /* 移动端适配：去掉限宽，变成上下布局 */
+  /* 👇 关键修复：手机端重写样式 */
   @media(max-width:768px){
-    .container{max-width:100%;flex-direction:column;min-height:100vh}
-    .bg{width:100%;height:40%;top:auto;bottom:0;mask-image:linear-gradient(to top,transparent 0%,black 50%)}
-    .app{max-width:100%;height:60%;padding:24px 16px 16px}
-    #list{max-height:calc(60vh - 160px)}
+    /* 容器改为块级，让页面由内容自然撑开 */
+    .container{display:block;max-width:100%;min-height:100vh}
+    
+    /* 图灵改为全屏固定背景，变成极暗的水印 */
+    .bg{
+      position:fixed;
+      width:100%;
+      height:100%;
+      opacity:0.15;       /* 调低透明度，不干扰阅读 */
+      filter:brightness(0.6); /* 降低亮度 */
+      -webkit-mask-image:none;
+      mask-image:none;
+      z-index:0;
+    }
+    
+    /* 内容区占满屏幕，顶部对齐 */
+    .app{
+      padding:32px 20px;
+      max-width:100%;
+      min-height:100vh;
+      position:relative;
+      z-index:1;
+    }
+    
+    /* 取消列表的最大高度限制，让页面自然滚动 */
+    #list{
+      max-height:none;
+      overflow-y:visible;
+    }
   }
 </style>
 </head>
@@ -60,7 +85,7 @@
 <script>
   // 你的学习记录
   const data = [
-    { t: 'C语言实现哈希表3--冲突处理:链地址法', d: '2026-10-10 23:00' },
+    { t: 'C语言实现哈希表3--冲突处理：链地址法', d: '2026-10-10 23:00' },
     { t: '704.二分查找-力扣(LeetCode)--简单', d: '2026-10-10 15:00' },
     { t: 'C语言实现哈希表2--哈希函数的设计', d: '2026-10-10 12:00' },
     { t: 'C语言实现哈希表1--哈希表的基本概念与结构设计', d: '2026-10-09 23:00' },
