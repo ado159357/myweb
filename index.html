@@ -19,8 +19,21 @@
   .task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:flex-start;transition:.2s}
   .task:hover{background:#2d3b4f;border-color:#475569}
   
-  /* 👇 修改：将圆角从 50% 改为 5px，变成方形 */
-  .badge{flex-shrink:0;width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#f8fafc;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  /* 👇 修复：去掉半透明，改用实色背景和边框，并强制阻止浏览器反色 */
+  .badge{
+    flex-shrink:0;
+    width:22px;
+    height:22px;
+    border-radius:5px;
+    background:#1e293b;  /* 与卡片同色，插件无法反转 */
+    border:1px solid #475569; /* 实色边框，拒绝半透明 */
+    color:#f8fafc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2px;
+    forced-color-adjust:none; /* 强力阻止浏览器强制改变颜色 */
+  }
   
   .badge svg{width:12px;height:12px;display:block;margin:auto;transform:translateY(4px)}
   .task>div{flex:1;min-width:0}
@@ -33,7 +46,6 @@
     .app{padding:24px 16px;max-width:100%}
     ul{max-height:none;overflow-y:visible}
     .task{padding:14px 12px;gap:10px}
-    /* 👇 移动端同样改为方形 */
     .badge{width:20px;height:20px;border-radius:4px;margin-top:1px}
     .badge svg{width:10px;height:10px;transform:translateY(4px)}
     .task p{font-size:14px}
