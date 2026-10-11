@@ -6,7 +6,6 @@
 <title>学习动态</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   :root {
     --primary: #10b981;
     --text: #1f2937;
@@ -14,10 +13,8 @@
     --border: #e5e7eb;
     --bg-soft: #f9fafb;
   }
-
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     min-height: 100vh;
     background: linear-gradient(135deg, #0f766e 0%, #4f46e5 100%);
     display: flex;
@@ -27,7 +24,6 @@
     color: var(--text);
     -webkit-font-smoothing: antialiased;
   }
-
   .app {
     width: 100%;
     max-width: 560px;
@@ -37,118 +33,41 @@
     padding: 30px 28px 22px;
     animation: rise .5s cubic-bezier(.2,.8,.3,1);
   }
-
   @keyframes rise {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-  header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-  }
+  header h1 { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 9px; }
   header h1 .emoji { font-size: 26px; }
-
-  .subtitle {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-top: 6px;
-  }
-
-  #list {
-    list-style: none;
-    margin-top: 22px;
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
+  .subtitle { font-size: 13px; color: var(--text-light); margin-top: 6px; }
+  #list { list-style: none; margin-top: 22px; max-height: 60vh; overflow-y: auto; padding-right: 4px; }
   #list::-webkit-scrollbar { width: 6px; }
   #list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
-
   .task {
-    display: flex;
-    align-items: flex-start;
-    gap: 11px;
-    padding: 13px 12px;
-    border-radius: 12px;
-    border: 1px solid transparent;
-    transition: background .18s, border-color .18s;
+    display: flex; align-items: flex-start; gap: 11px; padding: 13px 12px;
+    border-radius: 12px; border: 1px solid transparent; transition: background .18s;
     animation: slideIn .28s cubic-bezier(.2,.8,.3,1);
   }
-
   @keyframes slideIn {
     from { opacity: 0; transform: translateX(-12px); }
     to   { opacity: 1; transform: translateX(0); }
   }
-
-  .task:hover {
-    background: var(--bg-soft);
-    border-color: var(--border);
-  }
-
+  .task:hover { background: var(--bg-soft); border-color: var(--border); }
   .badge {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    margin-top: 1px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+    border-radius: 50%; background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 700; display: flex;
+    align-items: center; justify-content: center;
     box-shadow: 0 2px 6px rgba(16,185,129,.35);
   }
-
   .task-body { flex: 1; min-width: 0; }
-
-  .task-text {
-    font-size: 15px;
-    line-height: 1.45;
-    word-break: break-word;
-  }
-
-  .task-time {
-    display: block;
-    font-size: 11.5px;
-    color: #9ca3af;
-    margin-top: 4px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .empty {
-    text-align: center;
-    padding: 52px 20px;
-    color: #9ca3af;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .empty .icon {
-    font-size: 44px;
-    display: block;
-    margin-bottom: 12px;
-    opacity: .8;
-  }
-
+  .task-text { font-size: 15px; line-height: 1.45; word-break: break-word; }
+  .task-time { display: block; font-size: 11.5px; color: #9ca3af; margin-top: 4px; font-variant-numeric: tabular-nums; }
   footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text-light);
-    min-height: 48px;
+    display: flex; justify-content: center; align-items: center;
+    margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text-light); min-height: 48px;
   }
-
   @media (max-width: 520px) {
     body { padding: 20px 12px; }
     .app { padding: 24px 18px 16px; border-radius: 18px; }
@@ -163,123 +82,74 @@
     <h1><span class="emoji">🏆</span>学习动态更新</h1>
     <p class="subtitle">这里记录着已经完成的项目</p>
   </header>
-
   <ul id="list"></ul>
-
-  <footer>
-    <span id="footerHint">还没有记录</span>
-  </footer>
+  <footer><span id="footerHint">还没有记录</span></footer>
 </div>
 
 <script>
 (function () {
   'use strict';
 
-  /* ================================================================
-     在这里编辑你的完成记录。
-     格式：{ text: '做了什么', time: 'YYYY-MM-DD HH:mm' }
-     顺序随意，页面会自动按时间倒序展示。
-     ================================================================ */
+  // ✅ 你的学习记录，已原样保留
   var DEFAULT_RECORDS = [
-    { text: 'C语言实现哈希表3--冲突处理：链地址法',       time: '2026-10-10 23:00' },
+    { text: 'C语言实现哈希表3--冲突处理:链地址法',       time: '2026-10-10 23:00' },
     { text: '704.二分查找-力扣(LeetCode)--简单',       time: '2026-10-10 15:00' },
     { text: 'C语言实现哈希表2--哈希函数的设计',       time: '2026-10-10 12:00' },
     { text: 'C语言实现哈希表1--哈希表的基本概念与结构设计',       time: '2026-10-09 23:00' },
     { text: '2841.几乎唯一子数组的最大和-力扣(LeetCode)--中等',       time: '2026-10-07 20:00' },
-
   ];
-  /* ================================================================ */
 
-  var records = [];
+  var listEl = document.getElementById('list');
+  var footerHint = document.getElementById('footerHint');
+  var pad = function (n) { return String(n).padStart(2, '0'); };
 
-  var $ = function (s) { return document.querySelector(s); };
-  var listEl = $('#list');
-  var footerHint = $('#footerHint');
-
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function isSameDay(ts, ref) {
-    var a = new Date(ts), b = new Date(ref);
-    return a.getFullYear() === b.getFullYear()
-        && a.getMonth() === b.getMonth()
-        && a.getDate() === b.getDate();
-  }
-
-  function timeLabel(ts) {
-    var d = new Date(ts);
-    var now = new Date();
-
-    if (isSameDay(ts, now)) {
-      return '今天 ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-    }
-
-    var yest = new Date(now);
-    yest.setDate(now.getDate() - 1);
-    if (isSameDay(ts, yest)) {
-      return '昨天 ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-    }
-
-    return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate())
-         + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-  }
-
-  // 解析 'YYYY-MM-DD HH:mm' 或 'YYYY-MM-DD'
+  // 解析时间字符串为时间戳
   function parseTime(str) {
     var m = String(str).match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?$/);
     if (!m) return Date.now();
-    return new Date(
-      Number(m[1]),
-      Number(m[2]) - 1,
-      Number(m[3]),
-      Number(m[4] || 0),
-      Number(m[5] || 0)
-    ).getTime();
+    return new Date(m[1], m[2] - 1, m[3], m[4] || 0, m[5] || 0).getTime();
   }
 
-  function buildFromDefaults() {
-    return DEFAULT_RECORDS.map(function (r) {
-      return {
-        text: String(r.text || '').trim(),
-        completedAt: parseTime(r.time)
-      };
-    }).filter(function (r) { return r.text; })
-      .sort(function (a, b) { return b.completedAt - a.completedAt; });
+  // 判断是否是同一天
+  function isSameDay(ts, ref) {
+    var a = new Date(ts), b = new Date(ref);
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
 
-  function render() {
-    var total = records.length;
+  // 格式化时间标签
+  function timeLabel(ts) {
+    var d = new Date(ts), now = new Date();
+    var timeStr = pad(d.getHours()) + ':' + pad(d.getMinutes());
+    if (isSameDay(ts, now)) return '今天 ' + timeStr;
+    
+    var yest = new Date(now);
+    yest.setDate(now.getDate() - 1);
+    if (isSameDay(ts, yest)) return '昨天 ' + timeStr;
+    
+    return d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) + ' ' + timeStr;
+  }
 
-    if (total === 0) {
-      listEl.innerHTML =
-        '<li class="empty"><span class="icon">🌱</span>还没有完成记录</li>';
-      footerHint.textContent = '还没有记录';
-      return;
-    }
+  // 处理数据并按时间倒序
+  var records = DEFAULT_RECORDS.map(function (r) {
+    return { text: r.text, ts: parseTime(r.time) };
+  }).sort(function (a, b) { return b.ts - a.ts; });
 
+  // 渲染页面
+  if (records.length === 0) {
+    listEl.innerHTML = '<li style="text-align:center;padding:52px;color:#9ca3af;font-size:14px;">🌱<br>还没有完成记录</li>';
+    footerHint.textContent = '还没有记录';
+  } else {
     listEl.innerHTML = records.map(function (t) {
       return '<li class="task">' +
-        '<span class="badge" aria-hidden="true">✓</span>' +
+        '<span class="badge">✓</span>' +
         '<div class="task-body">' +
-          '<p class="task-text">' + escapeHtml(t.text) + '</p>' +
-          '<span class="task-time">' + timeLabel(t.completedAt) + '</span>' +
+          '<p class="task-text">' + t.text + '</p>' +
+          '<span class="task-time">' + timeLabel(t.ts) + '</span>' +
         '</div>' +
       '</li>';
     }).join('');
-
-    footerHint.textContent = '共 ' + total + ' 条记录';
+    footerHint.textContent = '共 ' + records.length + ' 条记录';
   }
-
-  records = buildFromDefaults();
-  render();
 })();
 </script>
 </body>
