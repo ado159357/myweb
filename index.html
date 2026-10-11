@@ -1,39 +1,39 @@
-
-html lang="zh-CN">
-head>
-meta charset="UTF-8">
-meta name="viewport" content="width=device-width,initial-scale=1">
-<title>学习动态</title>title>学习动态</title>
-style>
-  *{margin:0;padding:0;box-sizing:border-box}{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,sans-serif;background:#0f172a;display:flex;justify-content:center;min-height:100vh;color:#f8fafc;overflow-x:hidden}body{font-family:-apple-system,sans-serif;background:#0f172a;display:flex;justify-content:center;min-height:100vh;color:#f8fafc;overflow-x:hidden}
-  /* 限宽居中容器，强制统一背景色 *//* 限宽居中容器，强制统一背景色 */
-  .container{position:relative;max-width:1200px;width:100%;min-height:100vh;display:flex;overflow:hidden;background:#0f172a}container{position:relative;max-width:1200px;width:100%;min-height:100vh;display:flex;overflow:hidden;background:#0f172a}
-  /* 右侧图灵：左右双向渐隐，融入深色背景 *//* 右侧图灵：左右双向渐隐，融入深色背景 */
-  .bg{position:absolute;right:0;bottom:0;width:60%;height:100%;background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);filter:brightness(.8) contrast(1.1);opacity:.65;pointer-events:none;z-index:1}bg{position:absolute;right:0;bottom:0;width:60%;height:100%;background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);filter:brightness(.8) contrast(1.1);opacity:.65;pointer-events:none;z-index:1}
-  /* 左侧内容区 *//* 左侧内容区 */
-  .app{position:relative;z-index:2;max-width:560px;width:100%;padding:48px 40px;display:flex;flex-direction:column;gap:20px}app{position:relative;z-index:2;max-width:560px;width:100%;padding:48px 40px;display:flex;flex-direction:column;gap:20px}
-  h1{font-size:22px;display:flex;align-items:center;gap:8px}h1{font-size:22px;display:flex;align-items:center;gap:8px}
-  .app > p{font-size:13px;color:#94a3b8;margin-top:-10px}app > p{font-size:13px;color:#94a3b8;margin-top:-10px}
-  /* 列表滚动区 *//* 列表滚动区 */
-  ul{list-style:none;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 220px);overflow-y:auto;padding-right:6px}ul{list-style:none;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 220px);overflow-y:auto;padding-right:6px}
-  ul::-webkit-scrollbar{width:4px}ul::-webkit-scrollbar{width:4px}
-  ul::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}ul::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
-  /* 纯色卡片防反转 *//* 纯色卡片防反转 */
-  .task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;transition:.2s}task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;transition:.2s}
-  .task:hover{background:#2d3b4f;border-color:#475569}task:hover{background:#2d3b4f;border-color:#475569}
-  .badge{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#064e3b;border:1px solid #10b981;color:#34d399;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center}badge{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#064e3b;border:1px solid #10b981;color:#34d399;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center}
-  .task p{color:#f1f5f9;font-size:15px;line-height:1.5;word-break:break-word}task p{color:#f1f5f9;font-size:15px;line-height:1.5;word-break:break-word}
-  .task span{font-size:12px;color:#94a3b8;margin-top:6px;display:block}task span{font-size:12px;color:#94a3b8;margin-top:6px;display:block}
-  页脚{font-size:13px;color:#94a3b8;padding-top:16px;border-top:1px solid #334155}footer{font-size:13px;color:#94a3b8;padding-top:16px;border-top:1px solid #334155}
-  /* 移动端极简适配 *//* 移动端极简适配 */
-  @media(max-width:768px){@media(max-width:768px){
-    .container{display:block}container{display:block}
-    .bg{position:fixed;width:100%;height:100%;opacity:.15;filter:brightness(.6);-webkit-mask-image:none;mask-image:none}bg{position:fixed;width:100%;height:100%;opacity:.15;filter:brightness(.6);-webkit-mask-image:none;mask-image:none}
-    .app{padding:32px 20px;max-width:100%}app{padding:32px 20px;max-width:100%}
-    ul{max-height:none;overflow-y:visible}ul{max-height:none;overflow-y:visible}
-  }}
-style>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学习动态</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,sans-serif;background:#0f172a;display:flex;justify-content:center;min-height:100vh;color:#f8fafc;overflow-x:hidden}
+  /* 限宽居中容器，强制统一背景色 */
+  .container{position:relative;max-width:1200px;width:100%;min-height:100vh;display:flex;overflow:hidden;background:#0f172a}
+  /* 右侧图灵：左右双向渐隐，融入深色背景 */
+  .bg{position:absolute;right:0;bottom:0;width:60%;height:100%;background:url('https://ado159357.github.io/myweb/Alan-Turing.jpg') center/cover;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 25%,#000 75%,transparent 100%);filter:brightness(.8) contrast(1.1);opacity:.65;pointer-events:none;z-index:1}
+  /* 左侧内容区 */
+  .app{position:relative;z-index:2;max-width:560px;width:100%;padding:48px 40px;display:flex;flex-direction:column;gap:20px}
+  h1{font-size:22px;display:flex;align-items:center;gap:8px}
+  .app > p{font-size:13px;color:#94a3b8;margin-top:-10px}
+  /* 列表滚动区 */
+  ul{list-style:none;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 220px);overflow-y:auto;padding-right:6px}
+  ul::-webkit-scrollbar{width:4px}
+  ul::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
+  /* 纯色卡片防反转 */
+  .task{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;gap:14px;transition:.2s}
+  .task:hover{background:#2d3b4f;border-color:#475569}
+  .badge{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#064e3b;border:1px solid #10b981;color:#34d399;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+  .task p{color:#f1f5f9;font-size:15px;line-height:1.5;word-break:break-word}
+  .task span{font-size:12px;color:#94a3b8;margin-top:6px;display:block}
+  footer{font-size:13px;color:#94a3b8;padding-top:16px;border-top:1px solid #334155}
+  /* 移动端极简适配 */
+  @media(max-width:768px){
+    .container{display:block}
+    .bg{position:fixed;width:100%;height:100%;opacity:.15;filter:brightness(.6);-webkit-mask-image:none;mask-image:none}
+    .app{padding:32px 20px;max-width:100%}
+    ul{max-height:none;overflow-y:visible}
+  }
+</style>
 </head>
 <body>
   <div class="container">
